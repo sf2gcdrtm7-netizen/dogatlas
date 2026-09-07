@@ -13,6 +13,14 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+:root {
+  --text: #302922;
+  --muted: #8c7c6c;
+  --card: rgba(255, 252, 247, 0.94);
+  --soft: #f3e9dc;
+  --dark: #46392f;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -24,42 +32,46 @@ body {
     Arial,
     sans-serif;
 
-  color: #292621;
+  color: var(--text);
 
-  background-color: #f5f0e7;
+  background-color: #f0e2cf;
 
   background-image:
     radial-gradient(
-      circle at 22px 20px,
-      rgba(120,100,75,.045) 0 7px,
-      transparent 8px
+      circle at 24px 22px,
+      rgba(137, 92, 51, 0.18) 0 9px,
+      transparent 10px
     ),
+
     radial-gradient(
-      circle at 13px 11px,
-      rgba(120,100,75,.035) 0 3px,
-      transparent 4px
+      circle at 13px 10px,
+      rgba(137, 92, 51, 0.13) 0 4px,
+      transparent 5px
     ),
+
     radial-gradient(
-      circle at 22px 7px,
-      rgba(120,100,75,.035) 0 3px,
-      transparent 4px
+      circle at 24px 6px,
+      rgba(137, 92, 51, 0.13) 0 4px,
+      transparent 5px
     ),
+
     radial-gradient(
-      circle at 31px 11px,
-      rgba(120,100,75,.035) 0 3px,
-      transparent 4px
+      circle at 35px 10px,
+      rgba(137, 92, 51, 0.13) 0 4px,
+      transparent 5px
     ),
+
     linear-gradient(
       145deg,
-      #faf6ef,
-      #f0e9de
+      #fff5e7,
+      #e8d4ba
     );
 
   background-size:
-    105px 105px,
-    105px 105px,
-    105px 105px,
-    105px 105px,
+    118px 118px,
+    118px 118px,
+    118px 118px,
+    118px 118px,
     auto;
 }
 
@@ -80,7 +92,7 @@ body {
 h1 {
   text-align: center;
   font-size: 40px;
-  margin: 12px 0 4px;
+  margin: 12px 0 5px;
   letter-spacing: -1px;
 }
 
@@ -90,38 +102,41 @@ h2 {
 
 .subtitle {
   text-align: center;
-  color: #8d8478;
+  color: var(--muted);
   font-size: 17px;
   margin-bottom: 31px;
 }
 
+
 /* ГЛАВНЫЕ КАРТОЧКИ */
 
 .menu-card {
-  background: rgba(255,255,255,.89);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--card);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
   border: 1px solid rgba(255,255,255,.8);
 
   border-radius: 25px;
+
   padding: 21px;
 
   margin-bottom: 14px;
 
   box-shadow:
-    0 7px 23px rgba(94,78,55,.07);
+    0 8px 24px rgba(87, 58, 34, 0.09);
 
   font-size: 19px;
-  font-weight: 720;
-
-  cursor: pointer;
+  font-weight: 700;
 
   display: flex;
   align-items: center;
   gap: 15px;
 
-  transition: .14s;
+  cursor: pointer;
+
+  transition: transform .13s;
 }
 
 .menu-card:active,
@@ -132,50 +147,55 @@ h2 {
 }
 
 .emoji {
-  font-size: 28px;
+  font-size: 29px;
 }
+
 
 /* НАЗАД */
 
 .back {
   border: 0;
 
-  background: rgba(255,255,255,.88);
+  background: var(--card);
+
+  border-radius: 17px;
 
   padding: 12px 17px;
 
-  border-radius: 17px;
+  margin-bottom: 18px;
+
+  color: var(--text);
 
   font-size: 16px;
   font-weight: 700;
 
-  margin-bottom: 18px;
-
   box-shadow:
-    0 4px 14px rgba(0,0,0,.04);
+    0 4px 14px rgba(70,50,30,.06);
 
   cursor: pointer;
 }
 
-/* БЕЛАЯ КАРТОЧКА */
+
+/* КАРТОЧКА */
 
 .content-card {
-  background: rgba(255,255,255,.91);
+  background: var(--card);
 
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 
-  border: 1px solid rgba(255,255,255,.85);
+  border: 1px solid rgba(255,255,255,.82);
 
   border-radius: 28px;
 
   padding: 22px;
 
-  box-shadow:
-    0 8px 25px rgba(87,70,49,.07);
-
   text-align: center;
+
+  box-shadow:
+    0 9px 28px rgba(80,57,34,.09);
 }
+
 
 /* ФОТО */
 
@@ -194,9 +214,9 @@ h2 {
   background:
     linear-gradient(
       110deg,
-      #e9e1d6 25%,
-      #f8f4ee 40%,
-      #e9e1d6 60%
+      #e5d7c7 25%,
+      #faf5ef 43%,
+      #e5d7c7 61%
     );
 
   background-size: 200% 100%;
@@ -204,7 +224,7 @@ h2 {
   animation: shimmer 1.5s infinite;
 
   box-shadow:
-    0 8px 22px rgba(70,55,35,.08);
+    0 8px 24px rgba(75,52,30,.09);
 }
 
 @keyframes shimmer {
@@ -245,28 +265,31 @@ h2 {
   justify-content: center;
   flex-direction: column;
 
+  background: #eee4d8;
+
+  color: var(--muted);
+
+  padding: 20px;
+
   text-align: center;
-
-  color: #91877b;
-
-  background: #eee7dd;
 
   font-size: 15px;
 }
 
 .photo-error .big {
-  font-size: 42px;
+  font-size: 43px;
   margin-bottom: 8px;
 }
+
 
 /* ТЕКСТ */
 
 .date {
-  color: #948a7f;
-
-  margin-bottom: 7px;
+  color: #948473;
 
   font-size: 15px;
+
+  margin-bottom: 6px;
 }
 
 .breed-title {
@@ -274,14 +297,14 @@ h2 {
   font-weight: 800;
 
   margin: 8px 0;
-
-  letter-spacing: -.4px;
 }
 
 .description {
-  color: #665f57;
-  line-height: 1.45;
+  color: #62584e;
+
+  line-height: 1.5;
 }
+
 
 /* КНОПКИ */
 
@@ -291,38 +314,38 @@ h2 {
 
   border: 0;
 
-  background: rgba(255,255,255,.92);
-
-  box-shadow:
-    0 4px 15px rgba(0,0,0,.055);
-
   border-radius: 18px;
 
   padding: 16px;
 
   margin-top: 10px;
 
-  color: #292621;
+  background: rgba(255,255,255,.96);
+
+  color: var(--text);
+
+  box-shadow:
+    0 4px 15px rgba(70,50,30,.06);
 
   font-size: 16px;
   font-weight: 700;
 
   cursor: pointer;
 
-  transition: .13s;
+  transition: transform .13s;
 }
 
 .button.dark {
-  background: #322e28;
+  background: var(--dark);
   color: white;
 }
 
 .answer.correct {
-  background: #dcebd9;
+  background: #dcebd7;
 }
 
 .answer.wrong {
-  background: #f1d9d5;
+  background: #f2d8d2;
 }
 
 .answer:disabled {
@@ -330,13 +353,42 @@ h2 {
 }
 
 .result-message {
-  min-height: 25px;
+  min-height: 27px;
+
+  margin-top: 16px;
 
   font-size: 17px;
   font-weight: 700;
-
-  margin-top: 16px;
 }
+
+
+/* РЕКОРД */
+
+.score-box {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+
+  margin-bottom: 4px;
+}
+
+.score-pill {
+  background: #f1e7da;
+
+  border-radius: 14px;
+
+  padding: 8px 12px;
+
+  color: #746453;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
 
 /* КАТАЛОГ */
 
@@ -344,7 +396,7 @@ h2 {
   display: grid;
 
   grid-template-columns:
-    repeat(2, 1fr);
+    repeat(2,1fr);
 
   gap: 11px;
 
@@ -352,53 +404,115 @@ h2 {
 }
 
 .breed-card {
-  background: rgba(255,255,255,.89);
+  min-height: 66px;
+
+  background: var(--card);
+
+  border: 1px solid rgba(255,255,255,.8);
 
   border-radius: 19px;
 
-  padding: 17px 9px;
-
-  text-align: center;
-
-  font-weight: 700;
-
-  box-shadow:
-    0 4px 14px rgba(0,0,0,.045);
-
-  cursor: pointer;
-
-  min-height: 66px;
+  padding: 17px 10px;
 
   display: flex;
   align-items: center;
   justify-content: center;
+
+  text-align: center;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  box-shadow:
+    0 4px 15px rgba(70,50,30,.055);
+
+  cursor: pointer;
 }
 
 .search {
   width: 100%;
 
-  border: 1px solid rgba(255,255,255,.7);
-
-  outline: none;
-
-  background: rgba(255,255,255,.88);
-
-  border-radius: 19px;
+  margin: 12px 0 8px;
 
   padding: 16px;
 
+  border: 1px solid rgba(255,255,255,.8);
+
+  outline: none;
+
+  border-radius: 19px;
+
+  background: var(--card);
+
   font-size: 16px;
 
-  margin: 6px 0 8px;
-
   box-shadow:
-    0 4px 14px rgba(0,0,0,.04);
+    0 4px 14px rgba(70,50,30,.05);
 }
+
+
+/* ИНФОРМАЦИЯ О ПОРОДЕ */
+
+.info-grid {
+  display: grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 10px;
+
+  margin: 18px 0;
+}
+
+.info-item {
+  background: var(--soft);
+
+  border-radius: 17px;
+
+  padding: 13px 10px;
+
+  text-align: left;
+}
+
+.info-label {
+  color: #998a79;
+
+  font-size: 12px;
+
+  margin-bottom: 4px;
+}
+
+.info-value {
+  color: #3b342d;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.breed-about {
+  color: #62584e;
+
+  line-height: 1.5;
+
+  text-align: left;
+
+  margin-top: 15px;
+}
+
+.photo-counter {
+  color: #918172;
+
+  font-size: 13px;
+
+  margin-top: -7px;
+  margin-bottom: 4px;
+}
+
 
 /* ТЕСТ */
 
 .progress {
-  color: #93897d;
+  color: #948473;
 
   margin-bottom: 14px;
 }
@@ -406,50 +520,43 @@ h2 {
 .quiz-question {
   font-size: 21px;
 
+  line-height: 1.35;
+
   font-weight: 800;
 
   margin-bottom: 18px;
+}
 
-  line-height: 1.3;
+.small-label {
+  color: #958576;
+
+  font-size: 13px;
+
+  margin-bottom: 5px;
 }
 
 .loading-text {
-  color: #948a7f;
+  color: #958576;
 }
 
 .footer {
   text-align: center;
 
-  color: #aaa096;
+  color: #a39382;
+
+  font-size: 13px;
 
   margin-top: 35px;
-
-  font-size: 13px;
 }
 
-.small-label {
-  font-size: 13px;
-  color: #9b9185;
-
-  margin-top: 4px;
-}
-
-/* МОБИЛЬНЫЕ */
-
-@media (max-width: 390px) {
-
+@media(max-width:390px) {
   h1 {
     font-size: 36px;
   }
 
   .photo-box {
-    height: 295px;
+    height: 300px;
   }
-
-  .catalog {
-    grid-template-columns: 1fr 1fr;
-  }
-
 }
 </style>
 </head>
@@ -458,9 +565,8 @@ h2 {
 
 <div class="container">
 
-<!-- ===================================
-ГЛАВНАЯ
-=================================== -->
+
+<!-- ГЛАВНАЯ -->
 
 <div id="home" class="page active">
 
@@ -470,49 +576,29 @@ h2 {
     Твой маленький мир собак
   </div>
 
-  <div class="menu-card"
-       onclick="showDogOfDay()">
-
+  <div class="menu-card" onclick="showDogOfDay()">
     <span class="emoji">🌟</span>
-
     Собака дня
-
   </div>
 
-  <div class="menu-card"
-       onclick="startGuess()">
-
+  <div class="menu-card" onclick="startGuess()">
     <span class="emoji">🔍</span>
-
     Угадай породу
-
   </div>
 
-  <div class="menu-card"
-       onclick="showRandomDog()">
-
+  <div class="menu-card" onclick="showRandomDog()">
     <span class="emoji">🎲</span>
-
     Случайная собака
-
   </div>
 
-  <div class="menu-card"
-       onclick="openCatalog()">
-
+  <div class="menu-card" onclick="openCatalog()">
     <span class="emoji">📚</span>
-
     Каталог пород
-
   </div>
 
-  <div class="menu-card"
-       onclick="startQuiz()">
-
+  <div class="menu-card" onclick="startQuiz()">
     <span class="emoji">🐾</span>
-
     Какая ты собака?
-
   </div>
 
   <div class="footer">
@@ -522,14 +608,11 @@ h2 {
 </div>
 
 
-<!-- ===================================
-СОБАКА ДНЯ
-=================================== -->
+<!-- СОБАКА ДНЯ -->
 
 <div id="dogday" class="page">
 
-  <button class="back"
-          onclick="goHome()">
+  <button class="back" onclick="goHome()">
     ← Назад
   </button>
 
@@ -537,11 +620,9 @@ h2 {
 
     <h2>🌟 Собака дня</h2>
 
-    <div id="dayDate"
-         class="date"></div>
+    <div id="dayDate" class="date"></div>
 
-    <div id="dayBreed"
-         class="breed-title"></div>
+    <div id="dayBreed" class="breed-title"></div>
 
     <div class="photo-box">
 
@@ -572,28 +653,31 @@ h2 {
 </div>
 
 
-<!-- ===================================
-УГАДАЙ ПОРОДУ
-=================================== -->
+<!-- УГАДАЙ ПОРОДУ -->
 
 <div id="guess" class="page">
 
-  <button class="back"
-          onclick="goHome()">
-
+  <button class="back" onclick="goHome()">
     ← Назад
-
   </button>
 
   <div class="content-card">
 
     <h2>🔍 Угадай породу</h2>
 
-    <div
-      id="guessScore"
-      class="date">
+    <div class="score-box">
 
-      Угадано: 0
+      <div id="guessScore" class="score-pill">
+        Правильно: 0
+      </div>
+
+      <div id="guessStreak" class="score-pill">
+        🔥 Серия: 0
+      </div>
+
+      <div id="guessRecord" class="score-pill">
+        🏆 Рекорд: 0
+      </div>
 
     </div>
 
@@ -610,7 +694,7 @@ h2 {
 
         <div class="big">🐕</div>
 
-        Пробуем загрузить фото…
+        Загружаю другую фотографию…
 
       </div>
 
@@ -638,18 +722,12 @@ h2 {
 </div>
 
 
-<!-- ===================================
-СЛУЧАЙНАЯ СОБАКА
-=================================== -->
+<!-- СЛУЧАЙНАЯ СОБАКА -->
 
 <div id="random" class="page">
 
-  <button
-    class="back"
-    onclick="goHome()">
-
+  <button class="back" onclick="goHome()">
     ← Назад
-
   </button>
 
   <div class="content-card">
@@ -674,7 +752,7 @@ h2 {
 
         <div class="big">🐶</div>
 
-        Не удалось загрузить фото
+        Фото временно не загрузилось
 
       </div>
 
@@ -685,6 +763,7 @@ h2 {
       onclick="loadRandomDog()">
 
       Показать другую 🐕
+
     </button>
 
   </div>
@@ -692,24 +771,18 @@ h2 {
 </div>
 
 
-<!-- ===================================
-КАТАЛОГ
-=================================== -->
+<!-- КАТАЛОГ -->
 
 <div id="catalog" class="page">
 
-  <button
-    class="back"
-    onclick="goHome()">
-
+  <button class="back" onclick="goHome()">
     ← Назад
-
   </button>
 
   <h2>📚 Каталог пород</h2>
 
   <div class="small-label">
-    Нажми на породу, чтобы посмотреть собаку
+    Выбери породу, чтобы познакомиться с ней
   </div>
 
   <input
@@ -726,9 +799,7 @@ h2 {
 </div>
 
 
-<!-- ===================================
-ПОРОДА ИЗ КАТАЛОГА
-=================================== -->
+<!-- КАРТОЧКА ПОРОДЫ -->
 
 <div id="breedDetail" class="page">
 
@@ -760,28 +831,92 @@ h2 {
 
         <div class="big">🐾</div>
 
-        Фото пока не загрузилось
+        Не удалось загрузить фото
 
       </div>
 
+    </div>
+
+    <div
+      id="photoCounter"
+      class="photo-counter">
     </div>
 
     <button
       id="detailAnother"
       class="button">
 
-      Другое фото 📸
+      Следующее фото 📸
 
     </button>
+
+    <div class="info-grid">
+
+      <div class="info-item">
+
+        <div class="info-label">
+          Размер
+        </div>
+
+        <div
+          id="detailSize"
+          class="info-value">
+        </div>
+
+      </div>
+
+      <div class="info-item">
+
+        <div class="info-label">
+          Активность
+        </div>
+
+        <div
+          id="detailActivity"
+          class="info-value">
+        </div>
+
+      </div>
+
+      <div class="info-item">
+
+        <div class="info-label">
+          Характер
+        </div>
+
+        <div
+          id="detailCharacter"
+          class="info-value">
+        </div>
+
+      </div>
+
+      <div class="info-item">
+
+        <div class="info-label">
+          Живут в среднем
+        </div>
+
+        <div
+          id="detailLife"
+          class="info-value">
+        </div>
+
+      </div>
+
+    </div>
+
+    <div
+      id="detailAbout"
+      class="breed-about">
+    </div>
 
   </div>
 
 </div>
 
 
-<!-- ===================================
-ТЕСТ
-=================================== -->
+<!-- ТЕСТ -->
 
 <div id="quiz" class="page">
 
@@ -814,9 +949,7 @@ h2 {
 </div>
 
 
-<!-- ===================================
-РЕЗУЛЬТАТ ТЕСТА
-=================================== -->
+<!-- РЕЗУЛЬТАТ -->
 
 <div id="quizResultPage" class="page">
 
@@ -865,7 +998,7 @@ h2 {
       class="button dark"
       onclick="startQuiz()">
 
-      Пройти тест ещё раз
+      Пройти ещё раз
 
     </button>
 
@@ -873,93 +1006,490 @@ h2 {
 
 </div>
 
-
 </div>
 
 
 <script>
 
-/* ===================================
-TELEGRAM
-=================================== */
+/* TELEGRAM */
 
-const tg = window.Telegram?.WebApp;
+const tg =
+  window.Telegram?.WebApp;
 
 if (tg) {
-
   tg.ready();
   tg.expand();
-
 }
 
 
-/* ===================================
-ПОРОДЫ
-=================================== */
+/* БАЗА ПОРОД */
 
 const breeds = [
 
-{name:"Акита",api:"akita"},
-{name:"Афганская борзая",api:"hound/afghan"},
-{name:"Австралийская овчарка",api:"australian/shepherd"},
-{name:"Бассет-хаунд",api:"hound/basset"},
-{name:"Бигль",api:"beagle"},
-{name:"Бладхаунд",api:"hound/blood"},
-{name:"Боксер",api:"boxer"},
-{name:"Бордер-колли",api:"collie/border"},
-{name:"Бордер-терьер",api:"terrier/border"},
-{name:"Борзая",api:"borzoi"},
-{name:"Бостон-терьер",api:"terrier/boston"},
-{name:"Бульдог английский",api:"bulldog/english"},
-{name:"Бульдог французский",api:"bulldog/french"},
-{name:"Бультерьер",api:"terrier/american"},
-{name:"Веймаранер",api:"weimaraner"},
-{name:"Вест-хайленд-уайт-терьер",api:"terrier/westhighland"},
-{name:"Визсла",api:"vizsla"},
-{name:"Далматин",api:"dalmatian"},
-{name:"Доберман",api:"doberman"},
-{name:"Золотистый ретривер",api:"retriever/golden"},
-{name:"Ирландский сеттер",api:"setter/irish"},
-{name:"Кеесхонд",api:"keeshond"},
-{name:"Керн-терьер",api:"terrier/cairn"},
-{name:"Колли",api:"collie/border"},
-{name:"Кокер-спаниель",api:"spaniel/cocker"},
-{name:"Лабрадор",api:"labrador"},
-{name:"Маламут",api:"malamute"},
-{name:"Мальтезе",api:"maltese"},
-{name:"Мопс",api:"pug"},
-{name:"Немецкая овчарка",api:"germanshepherd"},
-{name:"Немецкий дог",api:"dane/great"},
-{name:"Ньюфаундленд",api:"newfoundland"},
-{name:"Папильон",api:"papillon"},
-{name:"Пекинес",api:"pekinese"},
-{name:"Померанский шпиц",api:"pomeranian"},
-{name:"Пудель",api:"poodle/standard"},
-{name:"Миниатюрный пудель",api:"poodle/miniature"},
-{name:"Той-пудель",api:"poodle/toy"},
-{name:"Родезийский риджбек",api:"ridgeback/rhodesian"},
-{name:"Ротвейлер",api:"rottweiler"},
-{name:"Самоед",api:"samoyed"},
-{name:"Сенбернар",api:"stbernard"},
-{name:"Сиба-ину",api:"shiba"},
-{name:"Скотч-терьер",api:"terrier/scottish"},
-{name:"Стаффордширский терьер",api:"terrier/staffordshire"},
-{name:"Уиппет",api:"whippet"},
-{name:"Хаски",api:"husky"},
-{name:"Чау-чау",api:"chow"},
-{name:"Чихуахуа",api:"chihuahua"},
-{name:"Шарпей",api:"sharpei"},
-{name:"Шелти",api:"sheepdog/shetland"},
-{name:"Ши-тцу",api:"shihtzu"},
-{name:"Эрдельтерьер",api:"airedale"},
-{name:"Йоркширский терьер",api:"terrier/yorkshire"}
+{
+  name:"Акита",
+  api:"akita",
+  size:"Крупная",
+  activity:"Высокая",
+  character:"Верная, независимая",
+  life:"10–14 лет",
+  about:"Спокойная и преданная собака с сильным характером. Обычно очень привязана к своей семье, но может быть сдержанной с незнакомцами."
+},
+
+{
+  name:"Афганская борзая",
+  api:"hound/afghan",
+  size:"Крупная",
+  activity:"Высокая",
+  character:"Независимая, спокойная",
+  life:"12–14 лет",
+  about:"Элегантная борзая с длинной шерстью. Может казаться немного отстранённой, но со своими людьми бывает очень нежной."
+},
+
+{
+  name:"Бассет-хаунд",
+  api:"hound/basset",
+  size:"Средняя",
+  activity:"Невысокая",
+  character:"Добродушный, спокойный",
+  life:"10–12 лет",
+  about:"Спокойная собака с невероятным нюхом. Любит неторопливые прогулки, еду и компанию семьи."
+},
+
+{
+  name:"Бигль",
+  api:"beagle",
+  size:"Средняя",
+  activity:"Высокая",
+  character:"Весёлый, любопытный",
+  life:"12–15 лет",
+  about:"Любознательная и общительная порода. Бигли обожают исследовать запахи и обычно любят активные прогулки."
+},
+
+{
+  name:"Бладхаунд",
+  api:"hound/blood",
+  size:"Крупная",
+  activity:"Средняя",
+  character:"Мягкий, упрямый",
+  life:"10–12 лет",
+  about:"Известная следовая собака с очень сильным нюхом. По характеру обычно спокойная и добродушная."
+},
+
+{
+  name:"Боксер",
+  api:"boxer",
+  size:"Крупная",
+  activity:"Высокая",
+  character:"Игривый, преданный",
+  life:"10–12 лет",
+  about:"Энергичная и эмоциональная собака. Боксеры нередко долго сохраняют щенячью игривость."
+},
+
+{
+  name:"Бордер-колли",
+  api:"collie/border",
+  size:"Средняя",
+  activity:"Очень высокая",
+  character:"Умный, внимательный",
+  life:"12–15 лет",
+  about:"Очень обучаемая порода. Бордер-колли особенно нужны движение, занятия и задачи для головы."
+},
+
+{
+  name:"Бордер-терьер",
+  api:"terrier/border",
+  size:"Небольшая",
+  activity:"Высокая",
+  character:"Весёлый, смелый",
+  life:"12–15 лет",
+  about:"Небольшой активный терьер. Любит прогулки, игры и исследовать всё вокруг."
+},
+
+{
+  name:"Борзая",
+  api:"borzoi",
+  size:"Крупная",
+  activity:"Средняя",
+  character:"Спокойная, независимая",
+  life:"9–14 лет",
+  about:"Высокая и элегантная борзая. Дома часто довольно спокойная, а на прогулке способна развивать огромную скорость."
+},
+
+{
+  name:"Английский бульдог",
+  api:"bulldog/english",
+  size:"Средняя",
+  activity:"Невысокая",
+  character:"Спокойный, дружелюбный",
+  life:"8–10 лет",
+  about:"Коренастая и спокойная собака. Обычно любит умеренные прогулки и проводить время рядом с человеком."
+},
+
+{
+  name:"Французский бульдог",
+  api:"bulldog/french",
+  size:"Небольшая",
+  activity:"Средняя",
+  character:"Общительный, весёлый",
+  life:"10–12 лет",
+  about:"Компактная собака-компаньон. Обычно любит внимание и хорошо чувствует себя рядом с хозяином."
+},
+
+{
+  name:"Веймаранер",
+  api:"weimaraner",
+  size:"Крупная",
+  activity:"Очень высокая",
+  character:"Энергичный, привязчивый",
+  life:"10–13 лет",
+  about:"Атлетичная охотничья собака. Требует много движения и обычно очень сильно привязывается к своим людям."
+},
+
+{
+  name:"Вест-хайленд-уайт-терьер",
+  api:"terrier/westhighland",
+  size:"Небольшая",
+  activity:"Средняя",
+  character:"Смелый, жизнерадостный",
+  life:"13–15 лет",
+  about:"Маленький белый терьер с довольно большим характером. Любит игры, прогулки и внимание."
+},
+
+{
+  name:"Визсла",
+  api:"vizsla",
+  size:"Средняя",
+  activity:"Очень высокая",
+  character:"Нежная, активная",
+  life:"12–14 лет",
+  about:"Спортивная и очень ориентированная на человека собака. Часто старается всё время находиться рядом с хозяином."
+},
+
+{
+  name:"Далматин",
+  api:"dalmatian",
+  size:"Средняя",
+  activity:"Высокая",
+  character:"Активный, уверенный",
+  life:"11–13 лет",
+  about:"Знаменитая пятнистая порода. Далматинам требуется много движения и регулярные активные прогулки."
+},
+
+{
+  name:"Доберман",
+  api:"doberman",
+  size:"Крупная",
+  activity:"Высокая",
+  character:"Умный, преданный",
+  life:"10–13 лет",
+  about:"Спортивная и очень обучаемая собака. При хорошем воспитании сильно привязывается к семье."
+},
+
+{
+  name:"Золотистый ретривер",
+  api:"retriever/golden",
+  size:"Крупная",
+  activity:"Высокая",
+  character:"Добрый, общительный",
+  life:"10–12 лет",
+  about:"Одна из самых известных семейных пород. Обычно дружелюбна, контактна и любит совместные занятия."
+},
+
+{
+  name:"Ирландский сеттер",
+  api:"setter/irish",
+  size:"Крупная",
+  activity:"Очень высокая",
+  character:"Весёлый, общительный",
+  life:"12–15 лет",
+  about:"Красивый рыжий сеттер с большим запасом энергии. Любит бегать, играть и находиться рядом с людьми."
+},
+
+{
+  name:"Йоркширский терьер",
+  api:"terrier/yorkshire",
+  size:"Маленькая",
+  activity:"Средняя",
+  character:"Смелый, живой",
+  life:"13–16 лет",
+  about:"Миниатюрная собака с характером настоящего терьера. Несмотря на размер, йорки бывают очень уверенными."
+},
+
+{
+  name:"Кеесхонд",
+  api:"keeshond",
+  size:"Средняя",
+  activity:"Средняя",
+  character:"Дружелюбный, общительный",
+  life:"12–15 лет",
+  about:"Пушистая собака-компаньон. Обычно любит людей и компанию семьи."
+},
+
+{
+  name:"Керн-терьер",
+  api:"terrier/cairn",
+  size:"Небольшая",
+  activity:"Высокая",
+  character:"Любопытный, смелый",
+  life:"13–15 лет",
+  about:"Активный маленький терьер. Любит исследовать всё вокруг и часто бывает очень уверенным в себе."
+},
+
+{
+  name:"Лабрадор",
+  api:"labrador",
+  size:"Крупная",
+  activity:"Высокая",
+  character:"Дружелюбный, активный",
+  life:"10–12 лет",
+  about:"Лабрадоры известны любовью к людям, играм и еде. Им нравятся прогулки, плавание и совместные занятия."
+},
+
+{
+  name:"Маламут",
+  api:"malamute",
+  size:"Крупная",
+  activity:"Высокая",
+  character:"Сильный, самостоятельный",
+  life:"10–14 лет",
+  about:"Мощная северная собака, созданная для физической работы. Нуждается в нагрузке и последовательном воспитании."
+},
+
+{
+  name:"Мальтезе",
+  api:"maltese",
+  size:"Маленькая",
+  activity:"Средняя",
+  character:"Ласковая, живая",
+  life:"12–15 лет",
+  about:"Небольшая белая собака-компаньон. Обычно очень ориентирована на человека и любит находиться рядом."
+},
+
+{
+  name:"Мопс",
+  api:"pug",
+  size:"Маленькая",
+  activity:"Невысокая",
+  character:"Весёлый, общительный",
+  life:"12–15 лет",
+  about:"Мопсы обычно очень любят компанию людей и домашний уют. Им больше подходят умеренные нагрузки."
+},
+
+{
+  name:"Немецкая овчарка",
+  api:"germanshepherd",
+  size:"Крупная",
+  activity:"Высокая",
+  character:"Умная, преданная",
+  life:"9–13 лет",
+  about:"Универсальная рабочая порода. Хорошо обучается и любит, когда у неё есть понятная задача."
+},
+
+{
+  name:"Немецкий дог",
+  api:"dane/great",
+  size:"Очень крупная",
+  activity:"Средняя",
+  character:"Спокойный, ласковый",
+  life:"7–10 лет",
+  about:"Одна из самых высоких пород собак. Несмотря на размер, доги часто довольно спокойные и нежные."
+},
+
+{
+  name:"Ньюфаундленд",
+  api:"newfoundland",
+  size:"Очень крупная",
+  activity:"Средняя",
+  character:"Добрый, спокойный",
+  life:"9–10 лет",
+  about:"Массивная и обычно очень мягкая по характеру собака. Ньюфаундленды известны любовью к воде."
+},
+
+{
+  name:"Папильон",
+  api:"papillon",
+  size:"Маленькая",
+  activity:"Высокая",
+  character:"Умный, живой",
+  life:"14–16 лет",
+  about:"Маленькая, но очень сообразительная собака. Обычно активнее, чем может показаться по размеру."
+},
+
+{
+  name:"Пекинес",
+  api:"pekinese",
+  size:"Маленькая",
+  activity:"Невысокая",
+  character:"Независимый, спокойный",
+  life:"12–14 лет",
+  about:"Компактная собака-компаньон с независимым характером. Любит спокойную домашнюю жизнь."
+},
+
+{
+  name:"Померанский шпиц",
+  api:"pomeranian",
+  size:"Маленькая",
+  activity:"Средняя",
+  character:"Живой, уверенный",
+  life:"12–16 лет",
+  about:"Очень пушистая и энергичная маленькая собака. Часто ведёт себя так, будто значительно крупнее своего размера."
+},
+
+{
+  name:"Пудель",
+  api:"poodle/standard",
+  size:"Средняя",
+  activity:"Высокая",
+  character:"Умный, обучаемый",
+  life:"12–15 лет",
+  about:"Пудели очень хорошо обучаются и любят взаимодействие с человеком. Их шерсть требует регулярного ухода."
+},
+
+{
+  name:"Миниатюрный пудель",
+  api:"poodle/miniature",
+  size:"Небольшая",
+  activity:"Высокая",
+  character:"Умный, активный",
+  life:"13–16 лет",
+  about:"Компактный и очень сообразительный пудель. Хорошо подходит для игр и обучения."
+},
+
+{
+  name:"Родезийский риджбек",
+  api:"ridgeback/rhodesian",
+  size:"Крупная",
+  activity:"Высокая",
+  character:"Независимый, уверенный",
+  life:"10–12 лет",
+  about:"Сильная атлетичная порода. Риджбеки активны и требуют хорошей социализации и воспитания."
+},
+
+{
+  name:"Ротвейлер",
+  api:"rottweiler",
+  size:"Крупная",
+  activity:"Высокая",
+  character:"Уверенный, преданный",
+  life:"9–10 лет",
+  about:"Мощная рабочая собака. При грамотном воспитании очень ориентирована на свою семью."
+},
+
+{
+  name:"Самоед",
+  api:"samoyed",
+  size:"Средняя",
+  activity:"Высокая",
+  character:"Дружелюбный, энергичный",
+  life:"12–14 лет",
+  about:"Белая северная собака с знаменитой улыбкой. Любит движение и обычно очень общительна."
+},
+
+{
+  name:"Сенбернар",
+  api:"stbernard",
+  size:"Очень крупная",
+  activity:"Средняя",
+  character:"Спокойный, добрый",
+  life:"8–10 лет",
+  about:"Большая спокойная собака. Несмотря на размер, обычно достаточно мягкая по характеру."
+},
+
+{
+  name:"Сиба-ину",
+  api:"shiba",
+  size:"Средняя",
+  activity:"Средняя",
+  character:"Независимая, уверенная",
+  life:"13–16 лет",
+  about:"Японская порода с ярким характером. Сиба часто самостоятельна и не всегда стремится беспрекословно выполнять команды."
+},
+
+{
+  name:"Скотч-терьер",
+  api:"terrier/scottish",
+  size:"Небольшая",
+  activity:"Средняя",
+  character:"Независимый, уверенный",
+  life:"12–15 лет",
+  about:"Небольшой терьер с характерной внешностью. Обычно довольно самостоятельный и уверенный в себе."
+},
+
+{
+  name:"Уиппет",
+  api:"whippet",
+  size:"Средняя",
+  activity:"Средняя",
+  character:"Нежный, спокойный",
+  life:"12–15 лет",
+  about:"Очень быстрый спринтер на улице и нередко большой любитель дивана дома."
+},
+
+{
+  name:"Хаски",
+  api:"husky",
+  size:"Средняя",
+  activity:"Очень высокая",
+  character:"Общительный, независимый",
+  life:"12–14 лет",
+  about:"Энергичная северная порода. Хаски любят движение и могут быть довольно самостоятельными."
+},
+
+{
+  name:"Чау-чау",
+  api:"chow",
+  size:"Средняя",
+  activity:"Средняя",
+  character:"Независимый, спокойный",
+  life:"8–12 лет",
+  about:"Узнаваемая пушистая собака. Часто ведёт себя сдержанно и ценит личное пространство."
+},
+
+{
+  name:"Чихуахуа",
+  api:"chihuahua",
+  size:"Очень маленькая",
+  activity:"Средняя",
+  character:"Смелая, привязчивая",
+  life:"14–17 лет",
+  about:"Одна из самых маленьких пород, но характер у неё совсем не крошечный. Часто сильно привязывается к своим людям."
+},
+
+{
+  name:"Шарпей",
+  api:"sharpei",
+  size:"Средняя",
+  activity:"Средняя",
+  character:"Спокойный, независимый",
+  life:"8–12 лет",
+  about:"Узнаваемая порода со складчатой кожей. Часто сдержанна с незнакомцами, но привязана к семье."
+},
+
+{
+  name:"Ши-тцу",
+  api:"shihtzu",
+  size:"Маленькая",
+  activity:"Невысокая",
+  character:"Ласковая, общительная",
+  life:"10–16 лет",
+  about:"Небольшая собака-компаньон. Обычно любит находиться рядом с хозяином и хорошо чувствует себя дома."
+},
+
+{
+  name:"Эрдельтерьер",
+  api:"airedale",
+  size:"Средняя",
+  activity:"Высокая",
+  character:"Смелый, сообразительный",
+  life:"11–14 лет",
+  about:"Самый крупный из классических терьеров. Активен, любопытен и любит разнообразные занятия."
+}
 
 ];
 
 
-/* ===================================
-СТРАНИЦЫ
-=================================== */
+/* СТРАНИЦЫ */
 
 function openPage(id) {
 
@@ -974,78 +1504,63 @@ function openPage(id) {
     .classList.add("active");
 
   window.scrollTo(0,0);
-
 }
-
 
 function goHome() {
   openPage("home");
 }
 
 
-/* ===================================
-API
-=================================== */
+/* API */
 
-function apiURL(api, count = 1) {
+function apiURL(api,count=1) {
 
-  const parts = api.split("/");
+  const parts =
+    api.split("/");
 
-  const suffix =
+  const ending =
     count > 1
     ? `/images/random/${count}`
     : `/images/random`;
 
+  if (parts.length === 1) {
 
-  if(parts.length === 1) {
-
-    return (
-      `https://dog.ceo/api/breed/` +
-      `${parts[0]}${suffix}`
-    );
+    return `https://dog.ceo/api/breed/${parts[0]}${ending}`;
 
   }
 
-
-  return (
-    `https://dog.ceo/api/breed/` +
-    `${parts[0]}/${parts[1]}${suffix}`
-  );
-
+  return `https://dog.ceo/api/breed/${parts[0]}/${parts[1]}${ending}`;
 }
 
 
-/* ===================================
-ЗАГРУЗКА КАРТИНКИ
-=================================== */
+/* ПРОВЕРКА КАРТИНКИ */
 
 function preloadImage(url) {
 
   return new Promise(resolve => {
 
-    const img = new Image();
+    const image =
+      new Image();
 
     const timeout =
       setTimeout(
         () => resolve(null),
-        4500
+        5000
       );
 
-
-    img.onload = () => {
+    image.onload = () => {
 
       clearTimeout(timeout);
 
       resolve({
         url,
-        width: img.naturalWidth,
-        height: img.naturalHeight
+        width: image.naturalWidth,
+        height: image.naturalHeight
       });
 
     };
 
-
-    img.onerror = () => {
+    image.onerror = () => {
 
       clearTimeout(timeout);
 
@@ -1053,63 +1568,61 @@ function preloadImage(url) {
 
     };
 
-
-    img.src = url;
+    image.src = url;
 
   });
-
 }
 
 
-/* ===================================
-ВЫБОР БОЛЕЕ АККУРАТНОГО ФОТО
-=================================== */
+/* НЕСКОЛЬКО ФОТО */
 
-async function getAestheticDogImage(breed) {
+async function getDogPhotos(
+  breed,
+  amount = 5
+) {
 
-  for(let attempt = 0;
-      attempt < 3;
-      attempt++) {
+  for (
+    let attempt = 0;
+    attempt < 3;
+    attempt++
+  ) {
 
     try {
 
       const response =
         await fetch(
-          apiURL(breed.api, 5)
-          + "?t="
-          + Date.now()
+          apiURL(
+            breed.api,
+            Math.max(amount + 4, 9)
+          )
+          +
+          "?t="
+          +
+          Date.now()
         );
 
-
-      if(!response.ok) {
+      if (!response.ok) {
         continue;
       }
 
-
       const data =
         await response.json();
-
 
       let urls =
         Array.isArray(data.message)
         ? data.message
         : [data.message];
 
+      urls =
+        [...new Set(urls)];
 
       const checked =
         await Promise.all(
           urls.map(preloadImage)
         );
 
-
-      const valid =
+      let valid =
         checked.filter(Boolean);
-
-
-      if(valid.length === 0) {
-        continue;
-      }
-
 
       valid.forEach(photo => {
 
@@ -1117,38 +1630,41 @@ async function getAestheticDogImage(breed) {
           photo.width /
           photo.height;
 
-
         const ratioScore =
-          Math.abs(ratio - 1.1);
+          Math.abs(
+            ratio - 1.05
+          );
 
-
-        const resolutionPenalty =
+        const sizePenalty =
           photo.width < 500
           ? 1
           : 0;
 
-
         photo.score =
           ratioScore +
-          resolutionPenalty;
+          sizePenalty;
 
       });
-
 
       valid.sort(
         (a,b) =>
           a.score - b.score
       );
 
+      if (valid.length) {
 
-      return valid[0].url;
+        return valid
+          .slice(0,amount)
+          .map(photo => photo.url);
+
+      }
 
     }
 
     catch(error) {
 
       console.log(
-        "Фото не загрузилось",
+        "Ошибка фото",
         error
       );
 
@@ -1156,15 +1672,11 @@ async function getAestheticDogImage(breed) {
 
   }
 
-
-  return null;
-
+  return [];
 }
 
 
-/* ===================================
-ПОКАЗАТЬ ФОТО КРАСИВО
-=================================== */
+/* ОДНО ФОТО */
 
 async function setDogPhoto(
   imageId,
@@ -1173,89 +1685,91 @@ async function setDogPhoto(
 ) {
 
   const image =
-    document.getElementById(imageId);
+    document.getElementById(
+      imageId
+    );
 
   const error =
-    document.getElementById(errorId);
+    document.getElementById(
+      errorId
+    );
 
+  image.classList.remove(
+    "loaded"
+  );
 
-  image.classList.remove("loaded");
+  image.removeAttribute(
+    "src"
+  );
 
-  image.removeAttribute("src");
+  error.style.display =
+    "none";
 
-  error.style.display = "none";
+  const photos =
+    await getDogPhotos(
+      breed,
+      1
+    );
 
+  if (!photos.length) {
 
-  const url =
-    await getAestheticDogImage(breed);
-
-
-  if(!url) {
-
-    error.style.display = "flex";
+    error.style.display =
+      "flex";
 
     return false;
 
   }
 
-
   image.onload = () => {
 
-    image.classList.add("loaded");
+    image
+      .classList
+      .add("loaded");
 
-    error.style.display = "none";
+    error.style.display =
+      "none";
 
   };
-
 
   image.onerror = () => {
 
-    error.style.display = "flex";
+    error.style.display =
+      "flex";
 
   };
 
-
-  image.src = url;
+  image.src =
+    photos[0];
 
   return true;
-
 }
 
 
-/* ===================================
-СОБАКА ДНЯ
-=================================== */
+/* СОБАКА ДНЯ */
 
 async function showDogOfDay() {
 
-  openPage("dogday");
-
+  openPage(
+    "dogday"
+  );
 
   const today =
     new Date();
 
-
   const index = (
-
     today.getFullYear() * 372
-
     +
-
     today.getMonth() * 31
-
     +
-
     today.getDate()
-
-  ) % breeds.length;
-
+  )
+  %
+  breeds.length;
 
   const breed =
     breeds[index];
 
-
   const months = [
-
     "января",
     "февраля",
     "марта",
@@ -1268,201 +1782,218 @@ async function showDogOfDay() {
     "октября",
     "ноября",
     "декабря"
-
   ];
 
+  document
+    .getElementById(
+      "dayDate"
+    )
+    .innerText =
+    `${today.getDate()} ${months[today.getMonth()]}`;
 
   document
-    .getElementById("dayDate")
+    .getElementById(
+      "dayBreed"
+    )
     .innerText =
-
-    `${today.getDate()} ` +
-    `${months[today.getMonth()]}`;
-
-
-  document
-    .getElementById("dayBreed")
-    .innerText =
-
     breed.name;
 
-
   document
-    .getElementById("dayText")
+    .getElementById(
+      "dayText"
+    )
     .innerText =
-
-    `Сегодня собака дня — ` +
-    `${breed.name} 🐾`;
-
+    breed.about;
 
   await setDogPhoto(
     "dayImage",
     "dayError",
     breed
   );
-
 }
 
 
-/* ===================================
-УГАДАЙ ПОРОДУ
-=================================== */
+/* УГАДАЙ ПОРОДУ */
 
 let currentGuess = null;
 
 let guessScore = 0;
 
-let guessTotal = 0;
+let guessStreak = 0;
+
+let guessRecord =
+  Number(
+    localStorage.getItem(
+      "dogatlasGuessRecord"
+    )
+  )
+  ||
+  0;
 
 
 function startGuess() {
 
   guessScore = 0;
-  guessTotal = 0;
 
-  openPage("guess");
+  guessStreak = 0;
+
+  openPage(
+    "guess"
+  );
 
   updateGuessScore();
 
   newGuess();
-
 }
 
 
 function updateGuessScore() {
 
   document
-    .getElementById("guessScore")
+    .getElementById(
+      "guessScore"
+    )
     .innerText =
+    `Правильно: ${guessScore}`;
 
-    `Угадано: ${guessScore} ` +
-    `из ${guessTotal}`;
+  document
+    .getElementById(
+      "guessStreak"
+    )
+    .innerText =
+    `🔥 Серия: ${guessStreak}`;
 
+  document
+    .getElementById(
+      "guessRecord"
+    )
+    .innerText =
+    `🏆 Рекорд: ${guessRecord}`;
 }
 
 
 async function newGuess() {
 
   document
-    .getElementById("guessMessage")
-    .innerText = "";
-
+    .getElementById(
+      "guessMessage"
+    )
+    .innerText =
+    "";
 
   document
-    .getElementById("nextGuess")
-    .style.display = "none";
+    .getElementById(
+      "nextGuess"
+    )
+    .style.display =
+    "none";
 
+  const answerBox =
+    document.getElementById(
+      "guessAnswers"
+    );
 
-  const box =
-    document
-      .getElementById("guessAnswers");
-
-
-  box.innerHTML =
-    `<div class="loading-text">
-       Загружаю собаку… 🐾
-     </div>`;
-
+  answerBox.innerHTML =
+    '<div class="loading-text">Загружаю собаку… 🐾</div>';
 
   currentGuess =
     breeds[
       Math.floor(
         Math.random()
-        * breeds.length
+        *
+        breeds.length
       )
     ];
 
-
-  const loaded =
+  const success =
     await setDogPhoto(
       "guessImage",
       "guessError",
       currentGuess
     );
 
+  if (!success) {
 
-  if(!loaded) {
-
-    box.innerHTML =
-
-      `<button
-         class="button"
-         onclick="newGuess()">
-
-         Попробовать другую собаку
-
-       </button>`;
+    answerBox.innerHTML =
+    `
+      <button
+        class="button"
+        onclick="newGuess()">
+        Попробовать другую собаку
+      </button>
+    `;
 
     return;
-
   }
-
 
   let options =
     [currentGuess];
 
+  while (
+    options.length < 4
+  ) {
 
-  while(options.length < 4) {
-
-    const randomBreed =
+    const candidate =
       breeds[
         Math.floor(
           Math.random()
-          * breeds.length
+          *
+          breeds.length
         )
       ];
 
-
-    if(
+    if (
       !options.some(
         item =>
           item.name
-          === randomBreed.name
+          ===
+          candidate.name
       )
     ) {
 
-      options.push(randomBreed);
+      options.push(
+        candidate
+      );
 
     }
 
   }
-
 
   options.sort(
     () =>
       Math.random() - .5
   );
 
+  answerBox.innerHTML =
+    "";
 
-  box.innerHTML = "";
+  options.forEach(
+    breed => {
 
-
-  options.forEach(breed => {
-
-    const button =
-      document.createElement("button");
-
-
-    button.className =
-      "answer";
-
-
-    button.innerText =
-      breed.name;
-
-
-    button.onclick =
-      () =>
-        checkGuess(
-          breed,
-          button
+      const button =
+        document.createElement(
+          "button"
         );
 
+      button.className =
+        "answer";
 
-    box.appendChild(button);
+      button.innerText =
+        breed.name;
 
-  });
+      button.onclick =
+        () =>
+          checkGuess(
+            breed,
+            button
+          );
 
+      answerBox.appendChild(
+        button
+      );
+
+    }
+  );
 }
 
 
@@ -1476,94 +2007,111 @@ function checkGuess(
       "#guessAnswers .answer"
     );
 
-
   buttons.forEach(
     button =>
       button.disabled = true
   );
 
-
-  guessTotal++;
-
-
-  if(
+  if (
     selected.name
-    === currentGuess.name
+    ===
+    currentGuess.name
   ) {
 
     guessScore++;
 
+    guessStreak++;
+
     clickedButton
       .classList
-      .add("correct");
-
+      .add(
+        "correct"
+      );
 
     document
       .getElementById(
         "guessMessage"
       )
       .innerText =
-
       "✅ Правильно!";
+
+    if (
+      guessStreak
+      >
+      guessRecord
+    ) {
+
+      guessRecord =
+        guessStreak;
+
+      localStorage.setItem(
+        "dogatlasGuessRecord",
+        guessRecord
+      );
+
+    }
 
   }
 
   else {
 
+    guessStreak = 0;
+
     clickedButton
       .classList
-      .add("wrong");
-
+      .add(
+        "wrong"
+      );
 
     buttons.forEach(
       button => {
 
-        if(
+        if (
           button.innerText
-          === currentGuess.name
+          ===
+          currentGuess.name
         ) {
 
           button
             .classList
-            .add("correct");
+            .add(
+              "correct"
+            );
 
         }
 
       }
     );
 
-
     document
       .getElementById(
         "guessMessage"
       )
       .innerText =
-
       `Это ${currentGuess.name} 🐶`;
 
   }
 
-
   updateGuessScore();
 
-
   document
-    .getElementById("nextGuess")
-    .style.display = "block";
-
+    .getElementById(
+      "nextGuess"
+    )
+    .style.display =
+    "block";
 }
 
 
-/* ===================================
-СЛУЧАЙНАЯ СОБАКА
-=================================== */
+/* СЛУЧАЙНАЯ СОБАКА */
 
 function showRandomDog() {
 
-  openPage("random");
+  openPage(
+    "random"
+  );
 
   loadRandomDog();
-
 }
 
 
@@ -1573,32 +2121,27 @@ async function loadRandomDog() {
     breeds[
       Math.floor(
         Math.random()
-        * breeds.length
+        *
+        breeds.length
       )
     ];
-
 
   document
     .getElementById(
       "randomBreed"
     )
     .innerText =
-
     breed.name;
-
 
   await setDogPhoto(
     "randomImage",
     "randomError",
     breed
   );
-
 }
 
 
-/* ===================================
-КАТАЛОГ
-=================================== */
+/* КАТАЛОГ */
 
 function openCatalog() {
 
@@ -1606,13 +2149,14 @@ function openCatalog() {
     .getElementById(
       "breedSearch"
     )
-    .value = "";
+    .value =
+    "";
 
-
-  openPage("catalog");
+  openPage(
+    "catalog"
+  );
 
   renderCatalog();
-
 }
 
 
@@ -1627,16 +2171,14 @@ function renderCatalog() {
       .toLowerCase()
       .trim();
 
-
   const container =
     document
       .getElementById(
         "catalogList"
       );
 
-
-  container.innerHTML = "";
-
+  container.innerHTML =
+    "";
 
   const filtered =
     breeds
@@ -1644,7 +2186,9 @@ function renderCatalog() {
         breed =>
           breed.name
             .toLowerCase()
-            .includes(query)
+            .includes(
+              query
+            )
       )
       .sort(
         (a,b) =>
@@ -1654,7 +2198,6 @@ function renderCatalog() {
           )
       );
 
-
   filtered.forEach(
     breed => {
 
@@ -1663,14 +2206,11 @@ function renderCatalog() {
           "div"
         );
 
-
       card.className =
         "breed-card";
 
-
       card.innerText =
         breed.name;
-
 
       card.onclick =
         () =>
@@ -1678,136 +2218,278 @@ function renderCatalog() {
             breed
           );
 
-
-      container
-        .appendChild(card);
+      container.appendChild(
+        card
+      );
 
     }
   );
-
 }
 
 
-/* ===================================
-СТРАНИЦА ПОРОДЫ
-=================================== */
+/* ГАЛЕРЕЯ */
 
-async function showBreed(breed) {
+let breedGallery = [];
+
+let breedGalleryIndex = 0;
+
+
+async function showBreed(
+  breed
+) {
 
   openPage(
     "breedDetail"
   );
-
 
   document
     .getElementById(
       "detailBreed"
     )
     .innerText =
-
     breed.name;
 
+  document
+    .getElementById(
+      "detailSize"
+    )
+    .innerText =
+    breed.size;
 
-  await setDogPhoto(
-    "detailImage",
-    "detailError",
-    breed
+  document
+    .getElementById(
+      "detailActivity"
+    )
+    .innerText =
+    breed.activity;
+
+  document
+    .getElementById(
+      "detailCharacter"
+    )
+    .innerText =
+    breed.character;
+
+  document
+    .getElementById(
+      "detailLife"
+    )
+    .innerText =
+    breed.life;
+
+  document
+    .getElementById(
+      "detailAbout"
+    )
+    .innerText =
+    breed.about;
+
+  const image =
+    document.getElementById(
+      "detailImage"
+    );
+
+  const error =
+    document.getElementById(
+      "detailError"
+    );
+
+  image.classList.remove(
+    "loaded"
   );
 
+  image.removeAttribute(
+    "src"
+  );
+
+  error.style.display =
+    "none";
+
+  document
+    .getElementById(
+      "photoCounter"
+    )
+    .innerText =
+    "Загружаю фотографии…";
+
+  breedGallery =
+    await getDogPhotos(
+      breed,
+      5
+    );
+
+  breedGalleryIndex =
+    0;
+
+  if (
+    !breedGallery.length
+  ) {
+
+    error.style.display =
+      "flex";
+
+    document
+      .getElementById(
+        "photoCounter"
+      )
+      .innerText =
+      "";
+
+    return;
+  }
+
+  showGalleryPhoto();
 
   document
     .getElementById(
       "detailAnother"
     )
     .onclick =
+    () => {
 
-    async () => {
+      breedGalleryIndex++;
 
-      await setDogPhoto(
-        "detailImage",
-        "detailError",
-        breed
-      );
+      if (
+        breedGalleryIndex
+        >=
+        breedGallery.length
+      ) {
+
+        breedGalleryIndex =
+          0;
+
+      }
+
+      showGalleryPhoto();
 
     };
-
 }
 
 
-/* ===================================
-ТЕСТ
-=================================== */
+function showGalleryPhoto() {
+
+  const image =
+    document.getElementById(
+      "detailImage"
+    );
+
+  const error =
+    document.getElementById(
+      "detailError"
+    );
+
+  image.classList.remove(
+    "loaded"
+  );
+
+  error.style.display =
+    "none";
+
+  image.onload =
+    () => {
+
+      image
+        .classList
+        .add(
+          "loaded"
+        );
+
+    };
+
+  image.onerror =
+    () => {
+
+      error.style.display =
+        "flex";
+
+    };
+
+  image.src =
+    breedGallery[
+      breedGalleryIndex
+    ];
+
+  document
+    .getElementById(
+      "photoCounter"
+    )
+    .innerText =
+    `Фото ${breedGalleryIndex + 1} из ${breedGallery.length}`;
+}
+
+
+/* ТЕСТ */
 
 const quizQuestions = [
 
 {
-q:"Как выглядит твой идеальный выходной?",
-answers:[
-["Гулять и встречаться с друзьями","labrador"],
-["Уехать куда-нибудь без плана","husky"],
-["Уютно сидеть дома","pug"],
-["Заняться чем-то интересным и полезным","collie"]
-]
+  q:"Как выглядит твой идеальный выходной?",
+  answers:[
+    ["Гулять и встречаться с друзьями","labrador"],
+    ["Уехать куда-нибудь без плана","husky"],
+    ["Уютно сидеть дома","pug"],
+    ["Заняться чем-то интересным","collie"]
+  ]
 },
 
 {
-q:"Что для тебя важнее всего?",
-answers:[
-["Близкие люди","labrador"],
-["Свобода","husky"],
-["Комфорт и спокойствие","pug"],
-["Развитие и новые знания","collie"]
-]
+  q:"Что для тебя важнее всего?",
+  answers:[
+    ["Близкие люди","labrador"],
+    ["Свобода","husky"],
+    ["Комфорт и спокойствие","pug"],
+    ["Новые знания и развитие","collie"]
+  ]
 },
 
 {
-q:"Ты оказалась на большой вечеринке. Что делаешь?",
-answers:[
-["Общаюсь почти со всеми","labrador"],
-["Придумаю какую-нибудь авантюру","husky"],
-["Найду пару любимых людей и останусь с ними","pug"],
-["Сначала осмотрюсь и пойму, что здесь происходит","collie"]
-]
+  q:"Ты пришла на большую вечеринку. Что дальше?",
+  answers:[
+    ["Буду общаться почти со всеми","labrador"],
+    ["Придумаю какую-нибудь авантюру","husky"],
+    ["Найду своих людей и останусь с ними","pug"],
+    ["Сначала посмотрю, что происходит","collie"]
+  ]
 },
 
 {
-q:"Перед тобой сложная задача. Твоя реакция?",
-answers:[
-["Позову кого-нибудь и решим вместе","labrador"],
-["Начну делать, разберусь по ходу","husky"],
-["Можно сначала немного отдохнуть?","pug"],
-["Составлю план и спокойно разберусь","collie"]
-]
+  q:"Перед тобой сложная задача. Что ты сделаешь?",
+  answers:[
+    ["Позову кого-нибудь и решим вместе","labrador"],
+    ["Начну делать и разберусь по ходу","husky"],
+    ["Сначала немного отдохну 😅","pug"],
+    ["Составлю план","collie"]
+  ]
 },
 
 {
-q:"Как тебя чаще всего можно описать?",
-answers:[
-["Добрая и общительная","labrador"],
-["Независимая и энергичная","husky"],
-["Спокойная и любящая уют","pug"],
-["Внимательная и сообразительная","collie"]
-]
+  q:"Какой вариант больше похож на тебя?",
+  answers:[
+    ["Добрая и общительная","labrador"],
+    ["Независимая и энергичная","husky"],
+    ["Спокойная и любящая уют","pug"],
+    ["Внимательная и сообразительная","collie"]
+  ]
 },
 
 {
-q:"Куда ты скорее отправишься?",
-answers:[
-["На пляж с друзьями","labrador"],
-["В горы или на спонтанное приключение","husky"],
-["В красивый уютный отель","pug"],
-["В новый город, который хочется исследовать","collie"]
-]
+  q:"Куда бы ты скорее отправилась?",
+  answers:[
+    ["На пляж с друзьями","labrador"],
+    ["В горы или на приключение","husky"],
+    ["В красивый уютный отель","pug"],
+    ["Исследовать новый город","collie"]
+  ]
 },
 
 {
-q:"Как ты обычно принимаешь важные решения?",
-answers:[
-["Советуюсь с близкими","labrador"],
-["Доверяю ощущениям","husky"],
-["Выбираю вариант, где мне спокойнее","pug"],
-["Сравниваю варианты и всё обдумываю","collie"]
-]
+  q:"Как ты обычно принимаешь важное решение?",
+  answers:[
+    ["Советуюсь с близкими","labrador"],
+    ["Доверяю ощущениям","husky"],
+    ["Выбираю самый комфортный вариант","pug"],
+    ["Всё сравниваю и обдумываю","collie"]
+  ]
 }
 
 ];
@@ -1816,31 +2498,27 @@ answers:[
 const quizDogs = {
 
 labrador:{
-name:"Лабрадор 🦮",
-api:"labrador",
-text:
-"Ты открытая, дружелюбная и очень ценишь своих людей. Тебе важны эмоции, общение и ощущение, что рядом есть свои."
+  name:"Лабрадор 🦮",
+  api:"labrador",
+  text:"Ты открытая, дружелюбная и очень ценишь своих людей. Тебе важны эмоции, общение и ощущение, что рядом есть свои."
 },
 
 husky:{
-name:"Хаски 🐺",
-api:"husky",
-text:
-"Ты самостоятельная, энергичная и любишь свободу. Тебе сложно долго сидеть на одном месте — хочется впечатлений и чего-нибудь нового."
+  name:"Хаски 🐺",
+  api:"husky",
+  text:"Ты самостоятельная, энергичная и любишь свободу. Тебе нужны новые впечатления, движение и возможность делать что-то по-своему."
 },
 
 pug:{
-name:"Мопс 🐶",
-api:"pug",
-text:
-"Ты умеешь наслаждаться уютом и маленькими приятностями. Комфорт, вкусная еда и любимые люди — отличный набор для счастья."
+  name:"Мопс 🐶",
+  api:"pug",
+  text:"Ты умеешь наслаждаться уютом и маленькими приятностями. Комфорт, вкусная еда и любимые люди — отличный набор для счастья."
 },
 
 collie:{
-name:"Бордер-колли 🐾",
-api:"collie/border",
-text:
-"Ты любознательная, наблюдательная и быстро разбираешься в новом. Когда тебе действительно интересно, остановить тебя сложно."
+  name:"Бордер-колли 🐾",
+  api:"collie/border",
+  text:"Ты любознательная, наблюдательная и быстро разбираешься в новом. Если тебе действительно интересно, остановить тебя сложно."
 }
 
 };
@@ -1853,22 +2531,21 @@ let quizPoints = {};
 
 function startQuiz() {
 
-  quizStep = 0;
+  quizStep =
+    0;
 
   quizPoints = {
-
     labrador:0,
     husky:0,
     pug:0,
     collie:0
-
   };
 
-
-  openPage("quiz");
+  openPage(
+    "quiz"
+  );
 
   showQuizQuestion();
-
 }
 
 
@@ -1879,53 +2556,41 @@ function showQuizQuestion() {
       quizStep
     ];
 
-
   document
     .getElementById(
       "quizProgress"
     )
     .innerText =
-
-    `Вопрос ${quizStep + 1} ` +
-    `из ${quizQuestions.length}`;
-
+    `Вопрос ${quizStep + 1} из ${quizQuestions.length}`;
 
   document
     .getElementById(
       "quizQuestion"
     )
     .innerText =
-
     question.q;
 
+  const answerBox =
+    document.getElementById(
+      "quizAnswers"
+    );
 
-  const answers =
-    document
-      .getElementById(
-        "quizAnswers"
-      );
+  answerBox.innerHTML =
+    "";
 
-
-  answers.innerHTML = "";
-
-
-  question.answers
-    .forEach(answer => {
+  question.answers.forEach(
+    answer => {
 
       const button =
-        document
-          .createElement(
-            "button"
-          );
-
+        document.createElement(
+          "button"
+        );
 
       button.className =
         "answer";
 
-
       button.innerText =
         answer[0];
-
 
       button.onclick =
         () =>
@@ -1933,27 +2598,27 @@ function showQuizQuestion() {
             answer[1]
           );
 
+      answerBox.appendChild(
+        button
+      );
 
-      answers
-        .appendChild(
-          button
-        );
-
-    });
-
+    }
+  );
 }
 
 
-function selectQuizAnswer(type) {
+function selectQuizAnswer(
+  type
+) {
 
   quizPoints[type]++;
 
   quizStep++;
 
-
-  if(
+  if (
     quizStep
-    >= quizQuestions.length
+    >=
+    quizQuestions.length
   ) {
 
     finishQuiz();
@@ -1965,7 +2630,6 @@ function selectQuizAnswer(type) {
     showQuizQuestion();
 
   }
-
 }
 
 
@@ -1978,45 +2642,42 @@ async function finishQuiz() {
     .reduce(
       (a,b) =>
         quizPoints[a]
-        >= quizPoints[b]
-        ? a
-        : b
+        >=
+        quizPoints[b]
+        ?
+        a
+        :
+        b
     );
 
-
   const dog =
-    quizDogs[winner];
-
+    quizDogs[
+      winner
+    ];
 
   openPage(
     "quizResultPage"
   );
-
 
   document
     .getElementById(
       "finalBreed"
     )
     .innerText =
-
     `Ты — ${dog.name}`;
-
 
   document
     .getElementById(
       "finalText"
     )
     .innerText =
-
     dog.text;
-
 
   await setDogPhoto(
     "finalImage",
     "finalError",
     dog
   );
-
 }
 
 </script>
