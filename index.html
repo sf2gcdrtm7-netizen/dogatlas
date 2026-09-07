@@ -679,6 +679,26 @@ h2 {
   font-weight: 700;
 }
 
+.saved-dog-photo-wrap {
+  position: relative;
+}
+
+.saved-dog-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 22px;
+  line-height: 32px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
 .dog-photo-wrap {
   position: relative;
 }
@@ -3027,22 +3047,45 @@ async function openProfile() {
     }
 
     savedDogsEl.innerHTML = dogs.map(dog => `
-      <div class="saved-dog-post">
-        <img
-          src="${dog.image_url}"
-          alt="${dog.breed_name}"
-        >
-        <div class="saved-dog-name">
-          ${dog.breed_name}
-        </div>
-      </div>
-    `).join("");
+  <div class="saved-dog-post">
+    <div class="saved-dog-photo-wrap">
+      <img
+        src="${dog.image_url}"
+        alt="${dog.breed_name}"
+        onclick="openDogPhoto('${dog.image_url}')"
+      >
+
+      <button
+        class="saved-dog-remove"
+        onclick="event.stopPropagation(); removeSavedDog(${dog.id}, this)">
+        ×
+      </button>
+    </div>
+
+    <div class="saved-dog-name">
+      ${dog.breed_name}
+    </div>
+  </div>
+`).join("");
 
   } catch (error) {
     console.log("Ошибка профиля:", error);
 
     savedDogsEl.innerHTML =
       "<div style='grid-column:1/-1;text-align:center;'>Ошибка загрузки собак</div>";
+  }
+}
+
+async function removeSavedDog(id, button) {
+  try {
+    const data = await dogAtlasProfileApi("delete_dog", { id });
+
+    if (data.ok) {
+      const card = button.closest(".saved-dog-post");
+      if (card) card.remove();
+    }
+  } catch (error) {
+    console.log("Ошибка удаления:", error);
   }
 }
 
