@@ -1,0 +1,159 @@
+import crypto from "crypto";
+
+function checkTelegramData(initData, botToken) {
+  const params = new URLSearchParams(initData);
+  const hash = params.get("hash");
+
+  if (!hash) return null;
+
+  params.delete("hash");
+
+  const dataCheckString = [...params.entries()]
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([key, value]) => `${key}=${value}`)
+    .join("\n");
+
+  const secretKey = crypto
+    .createHmac("sha256", "WebAppData")
+    .update(botToken)
+    .digest();
+
+  const calculatedHash = crypto
+    .createHmac("sha256", secretKey)
+    .update(dataCheckString)
+    .digest("hex");
+
+  if (calculatedHash !== hash) return null;
+
+  try {
+    return JSON.parse(params.get("user"));
+  } catch {
+    return null;
+  }
+}
+
+async function supabase(path, options = {}) {
+  const response = await fetch(
+    `${process.env.SUPABASE_URL}/rest/v1/${path}`,
+    {
+      ...options,
+      headers: {
+        apikey: process.env.SUPABASE_SERVICE_ROLE_KEY,
+        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=representation",
+        ...(options.headers || {})
+      }
+    }
+  );
+
+  const text = await response.text();
+
+  if (!response.ok) {
+    throw new Error(text);
+  }
+
+  return text ? JSON.parse(text) : null;
+}
+
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(200).json({
+      ok: true,
+      message: "DogAtlas profile API is working"
+    });
+  }
+
+  try {
+    const { action, initData, breed_name, image_url } = req.body || {};
+
+    const user = checkTelegramData(
+      initData,
+      process.env.BOT_TOKEN
+    );
+
+    if (!user) {
+      return res.status(401).json({
+        ok: false,
+        error: "Telegram user verification failed"
+      });
+    }
+
+    const telegramId = user.id;
+
+    if (action === "upsert_profile") {
+      const data = await supabase(
+        "profiles?on_conflict=telegram_id",
+        {
+          method: "POST",
+          headers: {
+            Prefer: "resolution=merge-duplicates,return=representation"
+          },
+          body: JSON.stringify({
+            telegram_id: telegramId,
+            username: user.username || null,
+            first_name: user.first_name || null,
+            photo_url: user.photo_url || null
+          })
+        }
+      );
+
+      return res.status(200).json({
+        ok: true,
+        profile: data?.[0] || null
+      });
+    }
+
+    if (action === "save_dog") {
+      if (!breed_name || !image_url) {
+        return res.status(400).json({
+          ok: false,
+          error: "Dog data missing"
+        });
+      }
+
+      const data = await supabase("saved_dogs", {
+        method: "POST",
+        body: JSON.stringify({
+          telegram_id: telegramId,
+          breed_name,
+          image_url
+        })
+      });
+
+      return res.status(200).json({
+        ok: true,
+        dog: data?.[0] || null
+      });
+    }
+
+    if (action === "get_profile") {
+      const profile = await supabase(
+        `profiles?telegram_id=eq.${telegramId}&limit=1`
+      );
+
+      const dogs = await supabase(
+        `saved_dogs?telegram_id=eq.${telegramId}&order=created_at.desc`
+      );
+
+      return res.status(200).json({
+        ok: true,
+        profile: profile?.[0] || null,
+        saved_dogs: dogs || []
+      });
+    }
+
+    return res.status(400).json({
+      ok: false,
+      error: "Unknown action"
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+      ok: false,
+      error: String(error)
+    });
+  }
+}
