@@ -674,10 +674,7 @@ h2 {
     <span class="emoji">🐾</span>
     Какая ты собака?
   </div>
-<div class="menu-card" onclick="openProfile()">
-  <span class="emoji">👤</span>
-  Профиль
-</div>
+
   <div class="footer">
     DogAtlas © 2026
   </div>
@@ -2813,7 +2810,13 @@ async function createMyProfile() {
 
 createMyProfile();
   async function openProfile() {
-  showPage("profile");
+  document.querySelectorAll(".page").forEach(page => {
+  page.classList.remove("active");
+});
+
+document.getElementById("profile").classList.add("active");
+
+window.scrollTo(0, 0);
 
   const nameEl = document.getElementById("profileName");
   const savedDogsEl = document.getElementById("savedDogs");
