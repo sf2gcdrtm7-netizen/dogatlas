@@ -3395,7 +3395,7 @@ async function addFriend(friendTelegramId) {
       resultEl.innerHTML = "Добавлено в друзья ✓";
       loadFriends();
     } else {
-      resultEl.innerHTML = "Не получилось добавить";
+      resultEl.innerHTML = data.error || "Не получилось добавить";
     }
   } catch (error) {
     resultEl.innerHTML = "Ошибка добавления";
