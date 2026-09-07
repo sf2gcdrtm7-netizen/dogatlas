@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>DogAtlas</title>
 
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -14,77 +20,154 @@
     }
 
     .container {
-      max-width: 500px;
+      max-width: 520px;
       margin: 0 auto;
-      padding: 24px 18px;
+      padding: 32px 20px 60px;
     }
 
     h1 {
       text-align: center;
-      font-size: 36px;
-      margin-bottom: 5px;
+      font-size: 38px;
+      margin: 0 0 8px;
     }
 
     .subtitle {
       text-align: center;
-      color: #777;
-      margin-bottom: 30px;
+      color: #888;
+      font-size: 18px;
+      margin-bottom: 32px;
     }
 
     .card {
       background: white;
-      border-radius: 22px;
-      padding: 20px;
+      border-radius: 24px;
+      padding: 22px;
       margin-bottom: 14px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      font-size: 18px;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .card:active {
+      transform: scale(0.97);
+    }
+
+    .emoji {
+      font-size: 30px;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .back {
+      border: none;
+      background: white;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 22px;
+      cursor: pointer;
+    }
+
+    .content-card {
+      background: white;
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+      text-align: center;
+    }
+
+    .dog-img {
+      width: 100%;
+      border-radius: 20px;
+      margin-top: 16px;
+      max-height: 360px;
+      object-fit: cover;
+    }
+
+    .breed-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .breed-item {
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+      font-weight: bold;
+    }
+
+    .answer-btn {
+      width: 100%;
+      border: none;
+      background: white;
+      padding: 16px;
+      border-radius: 18px;
+      margin-top: 10px;
+      font-size: 17px;
       font-weight: bold;
       cursor: pointer;
     }
 
-    .card span {
-      font-size: 26px;
-      margin-right: 10px;
+    .result {
+      margin-top: 18px;
+      font-size: 18px;
+      font-weight: bold;
     }
 
     .footer {
       text-align: center;
-      color: #999;
-      margin-top: 30px;
-      font-size: 13px;
+      color: #aaa;
+      margin-top: 34px;
+      font-size: 14px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="container">
+<div class="container">
+
+  <!-- ГЛАВНАЯ -->
+  <div id="home" class="page active">
 
     <h1>DogAtlas 🐶</h1>
     <div class="subtitle">Твой маленький мир собак</div>
 
-    <div class="card">
-      <span>🌟</span>
+    <div class="card" onclick="openPage('dogday')">
+      <span class="emoji">🌟</span>
       Собака дня
     </div>
 
-    <div class="card">
-      <span>🔍</span>
+    <div class="card" onclick="openGuessGame()">
+      <span class="emoji">🔍</span>
       Угадай породу
     </div>
 
-    <div class="card">
-      <span>🎲</span>
+    <div class="card" onclick="openRandomDog()">
+      <span class="emoji">🎲</span>
       Случайная собака
     </div>
 
-    <div class="card">
-      <span>📚</span>
+    <div class="card" onclick="openPage('catalog')">
+      <span class="emoji">📚</span>
       Каталог пород
     </div>
 
-    <div class="card">
-      <span>🐾</span>
+    <div class="card" onclick="openPage('quiz')">
+      <span class="emoji">🐾</span>
       Какая ты собака?
     </div>
 
@@ -93,6 +176,212 @@
     </div>
 
   </div>
+
+
+  <!-- СОБАКА ДНЯ -->
+  <div id="dogday" class="page">
+
+    <button class="back" onclick="goHome()">← Назад</button>
+
+    <div class="content-card">
+      <h2>🌟 Собака дня</h2>
+      <h3>Золотистый ретривер</h3>
+      <p>
+        Добрый, дружелюбный и очень ориентированный на человека пёс.
+      </p>
+
+      <img
+        class="dog-img"
+        src="https://images.dog.ceo/breeds/retriever-golden/n02099601_3004.jpg"
+        alt="Золотистый ретривер"
+      >
+    </div>
+
+  </div>
+
+
+  <!-- УГАДАЙ ПОРОДУ -->
+  <div id="guess" class="page">
+
+    <button class="back" onclick="goHome()">← Назад</button>
+
+    <div class="content-card">
+      <h2>🔍 Угадай породу</h2>
+
+      <img
+        class="dog-img"
+        src="https://images.dog.ceo/breeds/husky/n02110185_1469.jpg"
+        alt="Собака"
+      >
+
+      <button class="answer-btn" onclick="checkAnswer('Хаски')">
+        Хаски
+      </button>
+
+      <button class="answer-btn" onclick="checkAnswer('Бигль')">
+        Бигль
+      </button>
+
+      <button class="answer-btn" onclick="checkAnswer('Корги')">
+        Корги
+      </button>
+
+      <div id="guessResult" class="result"></div>
+    </div>
+
+  </div>
+
+
+  <!-- СЛУЧАЙНАЯ СОБАКА -->
+  <div id="random" class="page">
+
+    <button class="back" onclick="goHome()">← Назад</button>
+
+    <div class="content-card">
+      <h2>🎲 Случайная собака</h2>
+
+      <img
+        id="randomDogImage"
+        class="dog-img"
+        alt="Случайная собака"
+      >
+
+      <button class="answer-btn" onclick="loadRandomDog()">
+        Показать другую 🐕
+      </button>
+    </div>
+
+  </div>
+
+
+  <!-- КАТАЛОГ -->
+  <div id="catalog" class="page">
+
+    <button class="back" onclick="goHome()">← Назад</button>
+
+    <h2>📚 Каталог пород</h2>
+
+    <div class="breed-list">
+      <div class="breed-item">🐕 Лабрадор</div>
+      <div class="breed-item">🐺 Хаски</div>
+      <div class="breed-item">🐶 Корги</div>
+      <div class="breed-item">🐾 Бигль</div>
+      <div class="breed-item">🦮 Золотистый ретривер</div>
+      <div class="breed-item">🐕‍🦺 Немецкая овчарка</div>
+      <div class="breed-item">🐩 Пудель</div>
+      <div class="breed-item">🐕 Джек-рассел-терьер</div>
+      <div class="breed-item">🐶 Мопс</div>
+      <div class="breed-item">🐾 Бордер-колли</div>
+    </div>
+
+  </div>
+
+
+  <!-- ТЕСТ -->
+  <div id="quiz" class="page">
+
+    <button class="back" onclick="goHome()">← Назад</button>
+
+    <div class="content-card">
+      <h2>🐾 Какая ты собака?</h2>
+
+      <p>Что ты выберешь в свободный день?</p>
+
+      <button class="answer-btn" onclick="quizResult('Лабрадор 🦮')">
+        Пойти гулять и увидеться с друзьями
+      </button>
+
+      <button class="answer-btn" onclick="quizResult('Хаски 🐺')">
+        Уехать куда-нибудь приключаться
+      </button>
+
+      <button class="answer-btn" onclick="quizResult('Мопс 🐶')">
+        Остаться дома и отдыхать
+      </button>
+
+      <div id="quizResult" class="result"></div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  const tg = window.Telegram?.WebApp;
+
+  if (tg) {
+    tg.ready();
+    tg.expand();
+  }
+
+
+  function openPage(id) {
+    document.querySelectorAll('.page')
+      .forEach(page => page.classList.remove('active'));
+
+    document.getElementById(id)
+      .classList.add('active');
+
+    window.scrollTo(0, 0);
+  }
+
+
+  function goHome() {
+    openPage('home');
+  }
+
+
+  function openGuessGame() {
+    document.getElementById('guessResult').innerText = '';
+    openPage('guess');
+  }
+
+
+  function checkAnswer(answer) {
+    const result = document.getElementById('guessResult');
+
+    if (answer === 'Хаски') {
+      result.innerText = '✅ Правильно! Это хаски 🐺';
+    } else {
+      result.innerText = '❌ Не угадала. Попробуй ещё!';
+    }
+  }
+
+
+  async function loadRandomDog() {
+    const image = document.getElementById('randomDogImage');
+
+    image.src = '';
+
+    try {
+      const response = await fetch(
+        'https://dog.ceo/api/breeds/image/random'
+      );
+
+      const data = await response.json();
+
+      image.src = data.message;
+
+    } catch (error) {
+      image.alt = 'Не удалось загрузить собаку';
+    }
+  }
+
+
+  function openRandomDog() {
+    openPage('random');
+    loadRandomDog();
+  }
+
+
+  function quizResult(dog) {
+    document.getElementById('quizResult').innerText =
+      'Ты — ' + dog;
+  }
+
+</script>
 
 </body>
 </html>
