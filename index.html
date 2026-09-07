@@ -748,6 +748,92 @@ cursor: pointer;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
 }
 
+.friends-box {
+  margin: 0 0 24px;
+  padding: 16px;
+  background: rgba(255, 252, 247, 0.96);
+  border-radius: 20px;
+  box-shadow: 0 5px 18px rgba(70, 50, 35, 0.07);
+}
+
+.friends-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.friend-search-row {
+  display: flex;
+  gap: 8px;
+}
+
+.friend-search-input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 14px;
+  background: #f3eadf;
+  font-size: 15px;
+  outline: none;
+}
+
+.friend-search-button {
+  border: none;
+  border-radius: 14px;
+  padding: 0 16px;
+  font-weight: 700;
+  background: #2f2925;
+  color: white;
+}
+
+.friends-list {
+  margin-top: 12px;
+}
+
+.friend-result {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 10px;
+  background: #f7efe6;
+  border-radius: 16px;
+}
+
+.friend-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e8ddd0;
+}
+
+.friend-result-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.friend-result-name {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.friend-result-username {
+  margin-top: 2px;
+  font-size: 13px;
+  color: #8c7c6c;
+}
+
+.friend-add-button {
+  border: none;
+  border-radius: 12px;
+  padding: 9px 12px;
+  font-weight: 700;
+  background: #2f2925;
+  color: white;
+}
+
 </style>
 </head>
 
@@ -846,6 +932,29 @@ cursor: pointer;
     </div>
 
   </div>
+
+<div class="friends-box">
+  <div class="friends-title">Друзья</div>
+
+  <div class="friend-search-row">
+    <input
+      id="friendUsernameInput"
+      class="friend-search-input"
+      type="text"
+      placeholder="@username"
+    >
+
+    <button
+      class="friend-search-button"
+      onclick="findFriend()">
+      Найти
+    </button>
+  </div>
+
+  <div id="friendSearchResult"></div>
+
+  <div id="friendsList" class="friends-list"></div>
+</div>
 
   <div class="saved-title">
     ♡ Сохранённые собаки
@@ -3214,6 +3323,119 @@ function closeDogPhoto() {
 
   if (modal) {
     modal.classList.remove("show");
+  }
+}
+
+async function findFriend() {
+  const input = document.getElementById("friendUsernameInput");
+  const resultEl = document.getElementById("friendSearchResult");
+
+  const username = input?.value?.trim();
+
+  if (!username) {
+    resultEl.innerHTML = "Введите @username";
+    return;
+  }
+
+  resultEl.innerHTML = "Ищу...";
+
+  try {
+    const data = await dogAtlasProfileApi("find_user", {
+      username
+    });
+
+    if (!data.ok || !data.user) {
+      resultEl.innerHTML = "Пользователь не найден";
+      return;
+    }
+
+    const user = data.user;
+
+    resultEl.innerHTML = `
+      <div class="friend-result">
+        <img
+          class="friend-avatar"
+          src="${user.photo_url || ""}"
+          alt=""
+        >
+
+        <div class="friend-result-info">
+          <div class="friend-result-name">
+            ${user.first_name || "Пользователь"}
+          </div>
+
+          <div class="friend-result-username">
+            @${user.username || ""}
+          </div>
+        </div>
+
+        <button
+          class="friend-add-button"
+          onclick="addFriend(${user.telegram_id})">
+          Добавить
+        </button>
+      </div>
+    `;
+  } catch (error) {
+    resultEl.innerHTML = "Ошибка поиска";
+    console.log(error);
+  }
+}
+async function addFriend(friendTelegramId) {
+  const resultEl = document.getElementById("friendSearchResult");
+
+  try {
+    const data = await dogAtlasProfileApi("add_friend", {
+      friend_telegram_id: friendTelegramId
+    });
+
+    if (data.ok) {
+      resultEl.innerHTML = "Добавлено в друзья ✓";
+      loadFriends();
+    } else {
+      resultEl.innerHTML = "Не получилось добавить";
+    }
+  } catch (error) {
+    resultEl.innerHTML = "Ошибка добавления";
+    console.log(error);
+  }
+}
+
+async function loadFriends() {
+  const listEl = document.getElementById("friendsList");
+
+  if (!listEl) return;
+
+  try {
+    const data = await dogAtlasProfileApi("get_friends");
+
+    if (!data.ok || !data.friends || data.friends.length === 0) {
+      listEl.innerHTML = "";
+      return;
+    }
+
+    listEl.innerHTML = data.friends.map(friend => `
+      <div class="friend-result">
+        <img
+          class="friend-avatar"
+          src="${friend.photo_url || ""}"
+          alt=""
+        >
+
+        <div class="friend-result-info">
+          <div class="friend-result-name">
+            ${friend.first_name || "Пользователь"}
+          </div>
+
+          <div class="friend-result-username">
+            @${friend.username || ""}
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+  } catch (error) {
+    console.log("Ошибка загрузки друзей:", error);
   }
 }
 
