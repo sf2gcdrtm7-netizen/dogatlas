@@ -600,13 +600,39 @@ h2 {
     <span class="emoji">🐾</span>
     Какая ты собака?
   </div>
-
+<div class="menu-card" onclick="openProfile()">
+  <span class="emoji">👤</span>
+  Профиль
+</div>
   <div class="footer">
     DogAtlas © 2026
   </div>
 
 </div>
+<!-- ПРОФИЛЬ -->
+<div id="profile" class="page">
 
+  <button class="back" onclick="goHome()">
+    ← Назад
+  </button>
+
+  <div class="content-card">
+
+    <h2>👤 Профиль</h2>
+
+    <div id="profileName" class="breed-title">
+      Мой профиль
+    </div>
+
+    <p style="text-align:center;">
+      ❤️ Сохранённые собаки
+    </p>
+
+    <div id="savedDogs"></div>
+
+  </div>
+
+</div>
 
 <!-- СОБАКА ДНЯ -->
 
@@ -745,7 +771,10 @@ h2 {
         id="randomImage"
         class="dog-img"
         alt="Случайная собака">
-
+<button class="action-btn" onclick="saveRandomDog()">
+  ♡ Сохранить
+</button>
+      
       <div
         id="randomError"
         class="photo-error">
@@ -2679,7 +2708,113 @@ async function finishQuiz() {
     dog
   );
 }
+const tg = window.Telegram?.WebApp;
 
+const telegramInitData = tg?.initData || "";
+
+async function dogAtlasProfileApi(action, extra = {}) {
+  const response = await fetch("/api/profile", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      action,
+      initData: telegramInitData,
+      ...extra
+    })
+  });
+
+  return await response.json();
+}
+
+async function createMyProfile() {
+  if (!telegramInitData) return;
+
+  try {
+    await dogAtlasProfileApi("upsert_profile");
+  } catch (error) {
+    console.log("Ошибка создания профиля:", error);
+  }
+}
+
+createMyProfile();
+  async function openProfile() {
+  showPage("profile");
+
+  const nameEl = document.getElementById("profileName");
+  const savedDogsEl = document.getElementById("savedDogs");
+
+  nameEl.innerText = "Загрузка...";
+  savedDogsEl.innerHTML = "";
+
+  try {
+    const data = await dogAtlasProfileApi("get_profile");
+
+    if (!data.ok) {
+      nameEl.innerText = "Профиль";
+      savedDogsEl.innerHTML = "<p>Не удалось загрузить профиль</p>";
+      return;
+    }
+
+    const profile = data.profile;
+
+    nameEl.innerText =
+      profile?.first_name ||
+      profile?.username ||
+      "Пользователь";
+
+    const dogs = data.saved_dogs || [];
+
+    if (dogs.length === 0) {
+      savedDogsEl.innerHTML =
+        "<p style='text-align:center;'>Пока нет сохранённых собак 🐶</p>";
+      return;
+    }
+
+    savedDogsEl.innerHTML = dogs.map(dog => `
+      <div class="content-card" style="margin-top:12px;">
+        <img
+          src="${dog.image_url}"
+          alt="${dog.breed_name}"
+          style="width:100%;border-radius:18px;"
+        >
+        <div style="margin-top:10px;font-weight:700;">
+          ${dog.breed_name}
+        </div>
+      </div>
+    `).join("");
+
+  } catch (error) {
+    nameEl.innerText = "Профиль";
+    savedDogsEl.innerHTML =
+      "<p>Ошибка загрузки профиля</p>";
+  }
+}
+  async function saveRandomDog() {
+  const breed = document.getElementById("randomBreed")?.innerText;
+  const image = document.getElementById("randomImage")?.src;
+
+  if (!breed || !image) {
+    alert("Сначала загрузи собаку 🐶");
+    return;
+  }
+
+  try {
+    const data = await dogAtlasProfileApi("save_dog", {
+      breed_name: breed,
+      image_url: image
+    });
+
+    if (data.ok) {
+      alert("Собачка сохранена в профиль ❤️");
+    } else {
+      alert("Не получилось сохранить собаку");
+    }
+  } catch (error) {
+    alert("Ошибка сохранения");
+  }
+}
 </script>
 
 </body>
