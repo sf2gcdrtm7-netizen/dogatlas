@@ -774,27 +774,41 @@ cursor: pointer;
 
 </div>
 <!-- ПРОФИЛЬ -->
+
 <div id="profile" class="page">
 
   <button class="back" onclick="goHome()">
     ← Назад
   </button>
 
-  <div class="content-card">
+  <div class="profile-header">
 
-    <h2>👤 Профиль</h2>
+    <img
+      id="profilePhoto"
+      class="profile-photo"
+      src=""
+      alt="Аватар"
+    >
 
-    <div id="profileName" class="breed-title">
-      Мой профиль
+    <div class="profile-user-info">
+
+      <div id="profileName" class="profile-name">
+        Пользователь
+      </div>
+
+      <div id="profileUsername" class="profile-username">
+        @telegram
+      </div>
+
     </div>
 
-    <p style="text-align:center;">
-      ❤️ Сохранённые собаки
-    </p>
-
-    <div id="savedDogs"></div>
-
   </div>
+
+  <div class="saved-title">
+    ♡ Сохранённые собаки
+  </div>
+
+  <div id="savedDogs" class="saved-dogs-grid"></div>
 
 </div>
 
@@ -2319,28 +2333,51 @@ function showRandomDog() {
 
 
 async function loadRandomDog() {
-
   const breed =
-    breeds[
-      Math.floor(
-        Math.random()
-        *
-        breeds.length
-      )
-    ];
+    breeds[Math.floor(Math.random() * breeds.length)];
 
-  document
-    .getElementById(
-      "randomBreed"
-    )
-    .innerText =
-    breed.name;
+  const breedEl = document.getElementById("randomBreed");
+  const image = document.getElementById("randomImage");
+  const error = document.getElementById("randomError");
+  const heart = document.getElementById("randomHeart");
 
-  await setDogPhoto(
-    "randomImage",
-    "randomError",
-    breed
-  );
+  breedEl.innerText = breed.name;
+
+  image.classList.remove("loaded");
+  image.removeAttribute("src");
+  error.style.display = "none";
+
+  if (heart) {
+    heart.innerText = "♡";
+    heart.classList.remove("saved");
+  }
+
+  try {
+    const response = await fetch(
+      apiURL(breed.api, 1) + "?t=" + Date.now()
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.message) {
+      throw new Error("Фото не загрузилось");
+    }
+
+    image.onload = () => {
+      image.classList.add("loaded");
+      error.style.display = "none";
+    };
+
+    image.onerror = () => {
+      error.style.display = "flex";
+    };
+
+    image.src = data.message;
+
+  } catch (errorLoad) {
+    console.log("Ошибка случайной собаки:", errorLoad);
+    error.style.display = "flex";
+  }
 }
 
 
@@ -2912,64 +2949,98 @@ async function createMyProfile() {
 }
 
 createMyProfile();
-  async function openProfile() {
+
+async function openProfile() {
   document.querySelectorAll(".page").forEach(page => {
-  page.classList.remove("active");
-}); 
+    page.classList.remove("active");
+  });
 
-document.getElementById("profile").classList.add("active");
-
-window.scrollTo(0, 0);
+  document.getElementById("profile").classList.add("active");
+  window.scrollTo(0, 0);
 
   const nameEl = document.getElementById("profileName");
+  const usernameEl = document.getElementById("profileUsername");
+  const photoEl = document.getElementById("profilePhoto");
   const savedDogsEl = document.getElementById("savedDogs");
 
-  nameEl.innerText = "Загрузка...";
-  savedDogsEl.innerHTML = "";
+  const tgUser = window.Telegram?.WebApp?.initDataUnsafe?.user;
+
+  if (tgUser) {
+    nameEl.innerText =
+      tgUser.first_name ||
+      tgUser.username ||
+      "Пользователь";
+
+    usernameEl.innerText =
+      tgUser.username
+        ? `@${tgUser.username}`
+        : "Telegram";
+
+    if (tgUser.photo_url) {
+      photoEl.src = tgUser.photo_url;
+      photoEl.style.display = "block";
+    }
+  }
+
+  savedDogsEl.innerHTML =
+    "<div style='grid-column:1/-1;text-align:center;'>Загрузка...</div>";
 
   try {
     const data = await dogAtlasProfileApi("get_profile");
 
     if (!data.ok) {
-      nameEl.innerText = "Профиль";
-      savedDogsEl.innerHTML = "<p>Не удалось загрузить профиль</p>";
+      savedDogsEl.innerHTML =
+        "<div style='grid-column:1/-1;text-align:center;'>Не удалось загрузить собак</div>";
       return;
     }
 
-    const profile = data.profile;
+    const profile = data.profile || {};
 
-    nameEl.innerText =
-      profile?.first_name ||
-      profile?.username ||
-      "Пользователь";
+    if (!tgUser) {
+      nameEl.innerText =
+        profile.first_name ||
+        profile.username ||
+        "Пользователь";
+
+      usernameEl.innerText =
+        profile.username
+          ? `@${profile.username}`
+          : "Telegram";
+
+      if (profile.photo_url) {
+        photoEl.src = profile.photo_url;
+        photoEl.style.display = "block";
+      }
+    }
 
     const dogs = data.saved_dogs || [];
 
     if (dogs.length === 0) {
       savedDogsEl.innerHTML =
-        "<p style='text-align:center;'>Пока нет сохранённых собак 🐶</p>";
+        "<div style='grid-column:1/-1;text-align:center;color:#8c7c6c;'>Пока здесь пусто 🐶</div>";
       return;
     }
 
     savedDogsEl.innerHTML = dogs.map(dog => `
-      <div class="content-card" style="margin-top:12px;">
+      <div class="saved-dog-post">
         <img
           src="${dog.image_url}"
           alt="${dog.breed_name}"
-          style="width:100%;border-radius:18px;"
         >
-        <div style="margin-top:10px;font-weight:700;">
+        <div class="saved-dog-name">
           ${dog.breed_name}
         </div>
       </div>
     `).join("");
 
   } catch (error) {
-    nameEl.innerText = "Профиль";
+    console.log("Ошибка профиля:", error);
+
     savedDogsEl.innerHTML =
-      "<p>Ошибка загрузки профиля</p>";
+      "<div style='grid-column:1/-1;text-align:center;'>Ошибка загрузки собак</div>";
   }
-  }
+}
+
  async function saveRandomDog(button) {
   const breed = document.getElementById("randomBreed")?.innerText;
   const image = document.getElementById("randomImage")?.src;
