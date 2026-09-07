@@ -149,6 +149,93 @@ if (action === "delete_dog") {
   });
 }
 
+if (action === "find_user") {
+  const { username } = req.body || {};
+
+  if (!username) {
+    return res.status(400).json({
+      ok: false,
+      error: "Username missing"
+    });
+  }
+
+  const cleanUsername = username.replace("@", "");
+
+  const users = await supabase(
+    `profiles?username=eq.${encodeURIComponent(cleanUsername)}&limit=1`
+  );
+
+  const foundUser = users?.[0] || null;
+
+  if (!foundUser) {
+    return res.status(404).json({
+      ok: false,
+      error: "User not found"
+    });
+  }
+
+  if (foundUser.telegram_id === telegramId) {
+    return res.status(400).json({
+      ok: false,
+      error: "You cannot add yourself"
+    });
+  }
+
+  return res.status(200).json({
+    ok: true,
+    user: foundUser
+  });
+}
+
+if (action === "add_friend") {
+  const { friend_telegram_id } = req.body || {};
+
+  if (!friend_telegram_id) {
+    return res.status(400).json({
+      ok: false,
+      error: "Friend id missing"
+    });
+  }
+
+  await supabase("friends", {
+    method: "POST",
+    body: JSON.stringify({
+      telegram_id: telegramId,
+      friend_telegram_id
+    })
+  });
+
+  return res.status(200).json({
+    ok: true
+  });
+}
+
+if (action === "get_friends") {
+  const links = await supabase(
+    `friends?telegram_id=eq.${telegramId}&order=created_at.desc`
+  );
+
+  if (!links || links.length === 0) {
+    return res.status(200).json({
+      ok: true,
+      friends: []
+    });
+  }
+
+  const ids = links
+    .map(item => item.friend_telegram_id)
+    .join(",");
+
+  const friends = await supabase(
+    `profiles?telegram_id=in.(${ids})`
+  );
+
+  return res.status(200).json({
+    ok: true,
+    friends: friends || []
+  });
+}
+
     if (action === "get_profile") {
       const profile = await supabase(
         `profiles?telegram_id=eq.${telegramId}&limit=1`
