@@ -725,6 +725,29 @@ cursor: pointer;
 .dog-heart.saved {
   color: #e34b56;
 }
+.photo-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.photo-modal.show {
+  display: flex;
+}
+
+.photo-modal img {
+  max-width: 92vw;
+  max-height: 82vh;
+  border-radius: 22px;
+  object-fit: contain;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+}
+
 </style>
 </head>
 
@@ -3176,8 +3199,30 @@ async function saveDetailDog(button) {
   }
 }
 
+function openDogPhoto(url) {
+  const modal = document.getElementById("photoModal");
+  const image = document.getElementById("photoModalImage");
+
+  if (!modal || !image) return;
+
+  image.src = url;
+  modal.classList.add("show");
+}
+
+function closeDogPhoto() {
+  const modal = document.getElementById("photoModal");
+
+  if (modal) {
+    modal.classList.remove("show");
+  }
+}
+
 fillMiniProfile();
 </script>
+
+<div id="photoModal" class="photo-modal" onclick="closeDogPhoto()">
+  <img id="photoModalImage" src="" alt="Фото собаки">
+</div>
 
 </body>
 </html>
