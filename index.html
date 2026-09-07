@@ -2551,8 +2551,13 @@ async function showBreed(
 
   const image =
     document.getElementById(
-      "detailImage"
-    );
+      "detailImage" );
+    const detailHeart = document.getElementById("detailHeart");
+
+if (detailHeart) {
+  detailHeart.innerText = "♡";
+  detailHeart.classList.remove("saved");
+}
 
   const error =
     document.getElementById(
@@ -3117,12 +3122,7 @@ async function removeSavedDog(id, button) {
 async function saveDetailDog(button) {
   const breed = document.getElementById("detailBreed")?.innerText;
   const image = document.getElementById("detailImage")?.src;
-const detailHeart = document.getElementById("detailHeart");
 
-if (detailHeart) {
-  detailHeart.innerText = "♡";
-  detailHeart.classList.remove("saved");
-}
 
   if (!breed || !image) return;
 
