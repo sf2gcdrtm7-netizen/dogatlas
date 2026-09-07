@@ -2708,9 +2708,8 @@ async function finishQuiz() {
     dog
   );
 }
-const tg = window.Telegram?.WebApp;
-
-const telegramInitData = tg?.initData || "";
+const dogAtlasTg = window.Telegram?.WebApp;
+const dogAtlasInitData = dogAtlasTg?.initData || "";
 
 async function dogAtlasProfileApi(action, extra = {}) {
   const response = await fetch("/api/profile", {
@@ -2720,7 +2719,7 @@ async function dogAtlasProfileApi(action, extra = {}) {
     },
     body: JSON.stringify({
       action,
-      initData: telegramInitData,
+      initData: dogAtlasInitData,
       ...extra
     })
   });
@@ -2729,7 +2728,7 @@ async function dogAtlasProfileApi(action, extra = {}) {
 }
 
 async function createMyProfile() {
-  if (!telegramInitData) return;
+  if (!dogAtlasInitData) return;
 
   try {
     await dogAtlasProfileApi("upsert_profile");
