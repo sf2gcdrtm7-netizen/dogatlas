@@ -684,6 +684,9 @@ h2 {
 }
 
 .dog-heart {
+  pointer-events: auto;
+touch-action: manipulation;
+cursor: pointer;
   position: absolute;
   right: 12px;
   top: 12px;
@@ -936,7 +939,7 @@ h2 {
         <button
   id="randomHeart"
   class="dog-heart"
-  onclick="saveRandomDog(this)">
+onclick="event.stopPropagation(); saveRandomDog(this)"
   ♡
 </button>
       
@@ -1012,12 +1015,18 @@ h2 {
       class="breed-title">
     </div>
 
-    <div class="photo-box">
+    <div class="photo-box dog-photo-wrap">
 
       <img
         id="detailImage"
         class="dog-img"
         alt="Фото породы">
+<button
+  id="detailHeart"
+  class="dog-heart"
+  onclick="event.stopPropagation(); saveDetailDog(this)">
+  ♡
+</button>
 
       <div
         id="detailError"
@@ -2961,16 +2970,14 @@ window.scrollTo(0, 0);
       "<p>Ошибка загрузки профиля</p>";
   }
   }
-  async function saveRandomDog(button) {
-  const breed =
-    document.getElementById("randomBreed")?.innerText;
+ async function saveRandomDog(button) {
+  const breed = document.getElementById("randomBreed")?.innerText;
+  const image = document.getElementById("randomImage")?.src;
 
-  const image =
-    document.getElementById("randomImage")?.src;
+  if (!breed || !image) return;
 
-  if (!breed || !image) {
-    return;
-  }
+  button.innerText = "♥";
+  button.classList.add("saved");
 
   try {
     const data = await dogAtlasProfileApi("save_dog", {
@@ -2978,14 +2985,48 @@ window.scrollTo(0, 0);
       image_url: image
     });
 
-    if (data.ok) {
-      button.innerText = "♥";
-      button.classList.add("saved");
+    if (!data.ok) {
+      button.innerText = "♡";
+      button.classList.remove("saved");
     }
   } catch (error) {
+    button.innerText = "♡";
+    button.classList.remove("saved");
     console.log("Ошибка сохранения:", error);
   }
 }
+async function saveDetailDog(button) {
+  const breed = document.getElementById("detailBreed")?.innerText;
+  const image = document.getElementById("detailImage")?.src;
+const detailHeart = document.getElementById("detailHeart");
+
+if (detailHeart) {
+  detailHeart.innerText = "♡";
+  detailHeart.classList.remove("saved");
+}
+
+  if (!breed || !image) return;
+
+  button.innerText = "♥";
+  button.classList.add("saved");
+
+  try {
+    const data = await dogAtlasProfileApi("save_dog", {
+      breed_name: breed,
+      image_url: image
+    });
+
+    if (!data.ok) {
+      button.innerText = "♡";
+      button.classList.remove("saved");
+    }
+  } catch (error) {
+    button.innerText = "♡";
+    button.classList.remove("saved");
+    console.log("Ошибка сохранения:", error);
+  }
+}
+
   function fillMiniProfile() {
   const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
 
