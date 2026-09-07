@@ -230,8 +230,6 @@ if (action === "add_friend") {
   });
 }
 
-}
-
 if (action === "get_friend_requests") {
   const requests = await supabase(
     `friends?friend_telegram_id=eq.${telegramId}&status=eq.pending&order=created_at.desc`
