@@ -10,19 +10,63 @@
 <style>
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-  background: #f6f1e9;
-  color: #222;
+  min-height: 100vh;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
+  color: #292621;
+
+  background-color: #f5f0e7;
+
+  background-image:
+    radial-gradient(
+      circle at 22px 20px,
+      rgba(120,100,75,.045) 0 7px,
+      transparent 8px
+    ),
+    radial-gradient(
+      circle at 13px 11px,
+      rgba(120,100,75,.035) 0 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 22px 7px,
+      rgba(120,100,75,.035) 0 3px,
+      transparent 4px
+    ),
+    radial-gradient(
+      circle at 31px 11px,
+      rgba(120,100,75,.035) 0 3px,
+      transparent 4px
+    ),
+    linear-gradient(
+      145deg,
+      #faf6ef,
+      #f0e9de
+    );
+
+  background-size:
+    105px 105px,
+    105px 105px,
+    105px 105px,
+    105px 105px,
+    auto;
 }
 
 .container {
   max-width: 560px;
   margin: 0 auto;
-  padding: 28px 18px 60px;
+  padding: 26px 18px 60px;
 }
 
 .page {
@@ -35,8 +79,9 @@ body {
 
 h1 {
   text-align: center;
-  font-size: 39px;
-  margin: 10px 0 5px;
+  font-size: 40px;
+  margin: 12px 0 4px;
+  letter-spacing: -1px;
 }
 
 h2 {
@@ -45,24 +90,38 @@ h2 {
 
 .subtitle {
   text-align: center;
-  color: #888;
-  font-size: 18px;
-  margin-bottom: 30px;
+  color: #8d8478;
+  font-size: 17px;
+  margin-bottom: 31px;
 }
 
+/* ГЛАВНЫЕ КАРТОЧКИ */
+
 .menu-card {
-  background: white;
+  background: rgba(255,255,255,.89);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255,255,255,.8);
+
   border-radius: 25px;
-  padding: 22px;
+  padding: 21px;
+
   margin-bottom: 14px;
-  box-shadow: 0 5px 18px rgba(0,0,0,.07);
-  font-size: 20px;
-  font-weight: 700;
+
+  box-shadow:
+    0 7px 23px rgba(94,78,55,.07);
+
+  font-size: 19px;
+  font-weight: 720;
+
   cursor: pointer;
+
   display: flex;
   align-items: center;
   gap: 15px;
-  transition: .15s;
+
+  transition: .14s;
 }
 
 .menu-card:active,
@@ -73,131 +132,324 @@ h2 {
 }
 
 .emoji {
-  font-size: 29px;
+  font-size: 28px;
 }
+
+/* НАЗАД */
 
 .back {
   border: 0;
-  background: white;
+
+  background: rgba(255,255,255,.88);
+
   padding: 12px 17px;
-  border-radius: 16px;
+
+  border-radius: 17px;
+
   font-size: 16px;
   font-weight: 700;
+
   margin-bottom: 18px;
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.04);
+
   cursor: pointer;
 }
 
+/* БЕЛАЯ КАРТОЧКА */
+
 .content-card {
-  background: white;
-  border-radius: 25px;
+  background: rgba(255,255,255,.91);
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255,255,255,.85);
+
+  border-radius: 28px;
+
   padding: 22px;
-  box-shadow: 0 5px 18px rgba(0,0,0,.07);
+
+  box-shadow:
+    0 8px 25px rgba(87,70,49,.07);
+
   text-align: center;
 }
 
-.dog-img {
-  display: block;
+/* ФОТО */
+
+.photo-box {
+  position: relative;
+
   width: 100%;
-  max-height: 390px;
-  object-fit: cover;
-  border-radius: 22px;
+  height: 330px;
+
+  border-radius: 23px;
+
+  overflow: hidden;
+
   margin: 18px 0;
-  background: #eee;
+
+  background:
+    linear-gradient(
+      110deg,
+      #e9e1d6 25%,
+      #f8f4ee 40%,
+      #e9e1d6 60%
+    );
+
+  background-size: 200% 100%;
+
+  animation: shimmer 1.5s infinite;
+
+  box-shadow:
+    0 8px 22px rgba(70,55,35,.08);
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.dog-img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  display: block;
+
+  opacity: 0;
+
+  transition: opacity .35s;
+}
+
+.dog-img.loaded {
+  opacity: 1;
+}
+
+.photo-error {
+  position: absolute;
+
+  inset: 0;
+
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  text-align: center;
+
+  color: #91877b;
+
+  background: #eee7dd;
+
+  font-size: 15px;
+}
+
+.photo-error .big {
+  font-size: 42px;
+  margin-bottom: 8px;
+}
+
+/* ТЕКСТ */
+
 .date {
-  color: #888;
-  margin-bottom: 6px;
+  color: #948a7f;
+
+  margin-bottom: 7px;
+
+  font-size: 15px;
 }
 
 .breed-title {
-  font-size: 25px;
+  font-size: 26px;
   font-weight: 800;
+
   margin: 8px 0;
+
+  letter-spacing: -.4px;
 }
+
+.description {
+  color: #665f57;
+  line-height: 1.45;
+}
+
+/* КНОПКИ */
 
 .button,
 .answer {
   width: 100%;
+
   border: 0;
-  background: white;
-  box-shadow: 0 3px 13px rgba(0,0,0,.06);
+
+  background: rgba(255,255,255,.92);
+
+  box-shadow:
+    0 4px 15px rgba(0,0,0,.055);
+
   border-radius: 18px;
+
   padding: 16px;
-  margin-top: 11px;
-  font-size: 17px;
+
+  margin-top: 10px;
+
+  color: #292621;
+
+  font-size: 16px;
   font-weight: 700;
+
   cursor: pointer;
+
+  transition: .13s;
 }
 
 .button.dark {
-  background: #222;
+  background: #322e28;
   color: white;
 }
 
 .answer.correct {
-  background: #daf5dc;
+  background: #dcebd9;
 }
 
 .answer.wrong {
-  background: #ffdede;
+  background: #f1d9d5;
+}
+
+.answer:disabled {
+  opacity: 1;
 }
 
 .result-message {
-  min-height: 26px;
-  font-size: 18px;
-  font-weight: 700;
-  margin-top: 17px;
-}
+  min-height: 25px;
 
-.catalog {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 11px;
+  font-size: 17px;
+  font-weight: 700;
+
   margin-top: 16px;
 }
 
+/* КАТАЛОГ */
+
+.catalog {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 11px;
+
+  margin-top: 15px;
+}
+
 .breed-card {
-  background: white;
-  padding: 17px 10px;
-  border-radius: 18px;
+  background: rgba(255,255,255,.89);
+
+  border-radius: 19px;
+
+  padding: 17px 9px;
+
   text-align: center;
+
   font-weight: 700;
-  box-shadow: 0 3px 12px rgba(0,0,0,.05);
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.045);
+
   cursor: pointer;
+
+  min-height: 66px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .search {
   width: 100%;
-  border: 0;
+
+  border: 1px solid rgba(255,255,255,.7);
+
   outline: none;
-  background: white;
-  border-radius: 18px;
+
+  background: rgba(255,255,255,.88);
+
+  border-radius: 19px;
+
   padding: 16px;
+
   font-size: 16px;
-  margin: 5px 0 8px;
+
+  margin: 6px 0 8px;
+
+  box-shadow:
+    0 4px 14px rgba(0,0,0,.04);
 }
 
+/* ТЕСТ */
+
 .progress {
-  color: #888;
+  color: #93897d;
+
   margin-bottom: 14px;
 }
 
 .quiz-question {
-  font-size: 22px;
+  font-size: 21px;
+
   font-weight: 800;
+
   margin-bottom: 18px;
+
+  line-height: 1.3;
 }
 
-.loading {
-  color: #888;
+.loading-text {
+  color: #948a7f;
 }
 
 .footer {
   text-align: center;
-  color: #aaa;
+
+  color: #aaa096;
+
   margin-top: 35px;
-  font-size: 14px;
+
+  font-size: 13px;
+}
+
+.small-label {
+  font-size: 13px;
+  color: #9b9185;
+
+  margin-top: 4px;
+}
+
+/* МОБИЛЬНЫЕ */
+
+@media (max-width: 390px) {
+
+  h1 {
+    font-size: 36px;
+  }
+
+  .photo-box {
+    height: 295px;
+  }
+
+  .catalog {
+    grid-template-columns: 1fr 1fr;
+  }
+
 }
 </style>
 </head>
@@ -206,93 +458,179 @@ h2 {
 
 <div class="container">
 
-<!-- ГЛАВНАЯ -->
+<!-- ===================================
+ГЛАВНАЯ
+=================================== -->
 
 <div id="home" class="page active">
 
   <h1>DogAtlas 🐶</h1>
-  <div class="subtitle">Твой маленький мир собак</div>
 
-  <div class="menu-card" onclick="showDogOfDay()">
+  <div class="subtitle">
+    Твой маленький мир собак
+  </div>
+
+  <div class="menu-card"
+       onclick="showDogOfDay()">
+
     <span class="emoji">🌟</span>
+
     Собака дня
+
   </div>
 
-  <div class="menu-card" onclick="startGuess()">
+  <div class="menu-card"
+       onclick="startGuess()">
+
     <span class="emoji">🔍</span>
+
     Угадай породу
+
   </div>
 
-  <div class="menu-card" onclick="showRandomDog()">
+  <div class="menu-card"
+       onclick="showRandomDog()">
+
     <span class="emoji">🎲</span>
+
     Случайная собака
+
   </div>
 
-  <div class="menu-card" onclick="openCatalog()">
+  <div class="menu-card"
+       onclick="openCatalog()">
+
     <span class="emoji">📚</span>
+
     Каталог пород
+
   </div>
 
-  <div class="menu-card" onclick="startQuiz()">
+  <div class="menu-card"
+       onclick="startQuiz()">
+
     <span class="emoji">🐾</span>
+
     Какая ты собака?
+
   </div>
 
-  <div class="footer">DogAtlas © 2026</div>
+  <div class="footer">
+    DogAtlas © 2026
+  </div>
 
 </div>
 
 
-<!-- СОБАКА ДНЯ -->
+<!-- ===================================
+СОБАКА ДНЯ
+=================================== -->
 
 <div id="dogday" class="page">
 
-  <button class="back" onclick="goHome()">← Назад</button>
+  <button class="back"
+          onclick="goHome()">
+    ← Назад
+  </button>
 
   <div class="content-card">
 
     <h2>🌟 Собака дня</h2>
 
-    <div id="dayDate" class="date"></div>
+    <div id="dayDate"
+         class="date"></div>
 
-    <div id="dayBreed" class="breed-title"></div>
+    <div id="dayBreed"
+         class="breed-title"></div>
 
-    <img id="dayImage" class="dog-img">
+    <div class="photo-box">
 
-    <p id="dayText"></p>
+      <img
+        id="dayImage"
+        class="dog-img"
+        alt="Собака дня">
+
+      <div
+        id="dayError"
+        class="photo-error">
+
+        <div class="big">🐶</div>
+
+        Фото временно не загрузилось
+
+      </div>
+
+    </div>
+
+    <p
+      id="dayText"
+      class="description">
+    </p>
 
   </div>
 
 </div>
 
 
-<!-- УГАДАЙ ПОРОДУ -->
+<!-- ===================================
+УГАДАЙ ПОРОДУ
+=================================== -->
 
 <div id="guess" class="page">
 
-  <button class="back" onclick="goHome()">← Назад</button>
+  <button class="back"
+          onclick="goHome()">
+
+    ← Назад
+
+  </button>
 
   <div class="content-card">
 
     <h2>🔍 Угадай породу</h2>
 
-    <div id="guessScore" class="date">
+    <div
+      id="guessScore"
+      class="date">
+
       Угадано: 0
+
     </div>
 
-    <img id="guessImage" class="dog-img">
+    <div class="photo-box">
+
+      <img
+        id="guessImage"
+        class="dog-img"
+        alt="Угадай породу">
+
+      <div
+        id="guessError"
+        class="photo-error">
+
+        <div class="big">🐕</div>
+
+        Пробуем загрузить фото…
+
+      </div>
+
+    </div>
 
     <div id="guessAnswers"></div>
 
-    <div id="guessMessage" class="result-message"></div>
+    <div
+      id="guessMessage"
+      class="result-message">
+    </div>
 
     <button
       id="nextGuess"
       class="button dark"
       onclick="newGuess()"
-      style="display:none"
-    >
+      style="display:none">
+
       Следующая собака →
+
     </button>
 
   </div>
@@ -300,21 +638,52 @@ h2 {
 </div>
 
 
-<!-- СЛУЧАЙНАЯ СОБАКА -->
+<!-- ===================================
+СЛУЧАЙНАЯ СОБАКА
+=================================== -->
 
 <div id="random" class="page">
 
-  <button class="back" onclick="goHome()">← Назад</button>
+  <button
+    class="back"
+    onclick="goHome()">
+
+    ← Назад
+
+  </button>
 
   <div class="content-card">
 
     <h2>🎲 Случайная собака</h2>
 
-    <div id="randomBreed" class="breed-title"></div>
+    <div
+      id="randomBreed"
+      class="breed-title">
+    </div>
 
-    <img id="randomImage" class="dog-img">
+    <div class="photo-box">
 
-    <button class="button dark" onclick="loadRandomDog()">
+      <img
+        id="randomImage"
+        class="dog-img"
+        alt="Случайная собака">
+
+      <div
+        id="randomError"
+        class="photo-error">
+
+        <div class="big">🐶</div>
+
+        Не удалось загрузить фото
+
+      </div>
+
+    </div>
+
+    <button
+      class="button dark"
+      onclick="loadRandomDog()">
+
       Показать другую 🐕
     </button>
 
@@ -323,45 +692,86 @@ h2 {
 </div>
 
 
-<!-- КАТАЛОГ -->
+<!-- ===================================
+КАТАЛОГ
+=================================== -->
 
 <div id="catalog" class="page">
 
-  <button class="back" onclick="goHome()">← Назад</button>
+  <button
+    class="back"
+    onclick="goHome()">
+
+    ← Назад
+
+  </button>
 
   <h2>📚 Каталог пород</h2>
+
+  <div class="small-label">
+    Нажми на породу, чтобы посмотреть собаку
+  </div>
 
   <input
     id="breedSearch"
     class="search"
     placeholder="🔎 Найти породу..."
-    oninput="renderCatalog()"
-  >
+    oninput="renderCatalog()">
 
-  <div id="catalogList" class="catalog"></div>
+  <div
+    id="catalogList"
+    class="catalog">
+  </div>
 
 </div>
 
 
-<!-- КАРТОЧКА ПОРОДЫ -->
+<!-- ===================================
+ПОРОДА ИЗ КАТАЛОГА
+=================================== -->
 
 <div id="breedDetail" class="page">
 
-  <button class="back" onclick="openPage('catalog')">
+  <button
+    class="back"
+    onclick="openPage('catalog')">
+
     ← К каталогу
+
   </button>
 
   <div class="content-card">
 
-    <div id="detailBreed" class="breed-title"></div>
+    <div
+      id="detailBreed"
+      class="breed-title">
+    </div>
 
-    <img id="detailImage" class="dog-img">
+    <div class="photo-box">
+
+      <img
+        id="detailImage"
+        class="dog-img"
+        alt="Фото породы">
+
+      <div
+        id="detailError"
+        class="photo-error">
+
+        <div class="big">🐾</div>
+
+        Фото пока не загрузилось
+
+      </div>
+
+    </div>
 
     <button
       id="detailAnother"
-      class="button"
-    >
+      class="button">
+
       Другое фото 📸
+
     </button>
 
   </div>
@@ -369,19 +779,33 @@ h2 {
 </div>
 
 
-<!-- ТЕСТ -->
+<!-- ===================================
+ТЕСТ
+=================================== -->
 
 <div id="quiz" class="page">
 
-  <button class="back" onclick="goHome()">← Назад</button>
+  <button
+    class="back"
+    onclick="goHome()">
+
+    ← Назад
+
+  </button>
 
   <div class="content-card">
 
     <h2>🐾 Какая ты собака?</h2>
 
-    <div id="quizProgress" class="progress"></div>
+    <div
+      id="quizProgress"
+      class="progress">
+    </div>
 
-    <div id="quizQuestion" class="quiz-question"></div>
+    <div
+      id="quizQuestion"
+      class="quiz-question">
+    </div>
 
     <div id="quizAnswers"></div>
 
@@ -390,126 +814,167 @@ h2 {
 </div>
 
 
-<!-- РЕЗУЛЬТАТ ТЕСТА -->
+<!-- ===================================
+РЕЗУЛЬТАТ ТЕСТА
+=================================== -->
 
 <div id="quizResultPage" class="page">
 
-  <button class="back" onclick="goHome()">← На главную</button>
+  <button
+    class="back"
+    onclick="goHome()">
+
+    ← На главную
+
+  </button>
 
   <div class="content-card">
 
     <h2>Твой результат 🐾</h2>
 
-    <div id="finalBreed" class="breed-title"></div>
+    <div
+      id="finalBreed"
+      class="breed-title">
+    </div>
 
-    <img id="finalImage" class="dog-img">
+    <div class="photo-box">
 
-    <p id="finalText"></p>
+      <img
+        id="finalImage"
+        class="dog-img"
+        alt="Результат теста">
 
-    <button class="button dark" onclick="startQuiz()">
+      <div
+        id="finalError"
+        class="photo-error">
+
+        <div class="big">🐶</div>
+
+        Фото временно не загрузилось
+
+      </div>
+
+    </div>
+
+    <p
+      id="finalText"
+      class="description">
+    </p>
+
+    <button
+      class="button dark"
+      onclick="startQuiz()">
+
       Пройти тест ещё раз
+
     </button>
 
   </div>
 
 </div>
 
+
 </div>
 
 
 <script>
 
+/* ===================================
+TELEGRAM
+=================================== */
+
 const tg = window.Telegram?.WebApp;
 
 if (tg) {
+
   tg.ready();
   tg.expand();
+
 }
 
 
-/* =========================
-   ПОРОДЫ
-========================= */
+/* ===================================
+ПОРОДЫ
+=================================== */
 
 const breeds = [
 
-  {name:"Лабрадор", api:"labrador"},
-  {name:"Золотистый ретривер", api:"retriever/golden"},
-  {name:"Хаски", api:"husky"},
-  {name:"Бигль", api:"beagle"},
-  {name:"Мопс", api:"pug"},
-  {name:"Чихуахуа", api:"chihuahua"},
-  {name:"Акита", api:"akita"},
-  {name:"Самоед", api:"samoyed"},
-  {name:"Далматин", api:"dalmatian"},
-  {name:"Боксер", api:"boxer"},
-  {name:"Доберман", api:"doberman"},
-  {name:"Ротвейлер", api:"rottweiler"},
-  {name:"Немецкая овчарка", api:"germanshepherd"},
-  {name:"Мальтезе", api:"maltese"},
-  {name:"Ши-тцу", api:"shihtzu"},
-  {name:"Померанский шпиц", api:"pomeranian"},
-  {name:"Чау-чау", api:"chow"},
-  {name:"Ньюфаундленд", api:"newfoundland"},
-  {name:"Бернский зенненхунд", api:"mountain/bernese"},
-  {name:"Английский сеттер", api:"setter/english"},
-  {name:"Ирландский сеттер", api:"setter/irish"},
-  {name:"Английский спрингер-спаниель", api:"springer/english"},
-  {name:"Кокер-спаниель", api:"spaniel/cocker"},
-  {name:"Бретонский эпаньоль", api:"brittany"},
-  {name:"Бладхаунд", api:"hound/blood"},
-  {name:"Бассет-хаунд", api:"hound/basset"},
-  {name:"Афганская борзая", api:"hound/afghan"},
-  {name:"Грейхаунд", api:"greyhound/italian"},
-  {name:"Уиппет", api:"whippet"},
-  {name:"Борзая", api:"borzoi"},
-  {name:"Эрдельтерьер", api:"airedale"},
-  {name:"Скотч-терьер", api:"terrier/scottish"},
-  {name:"Вест-хайленд-уайт-терьер", api:"terrier/westhighland"},
-  {name:"Йоркширский терьер", api:"terrier/yorkshire"},
-  {name:"Керн-терьер", api:"terrier/cairn"},
-  {name:"Бордер-терьер", api:"terrier/border"},
-  {name:"Стаффордширский терьер", api:"terrier/staffordshire"},
-  {name:"Бультерьер", api:"terrier/american"},
-  {name:"Французский бульдог", api:"bulldog/french"},
-  {name:"Английский бульдог", api:"bulldog/english"},
-  {name:"Бостон-терьер", api:"terrier/boston"},
-  {name:"Немецкий дог", api:"dane/great"},
-  {name:"Сенбернар", api:"stbernard"},
-  {name:"Шарпей", api:"sharpei"},
-  {name:"Шиба-ину", api:"shiba"},
-  {name:"Папильон", api:"papillon"},
-  {name:"Пекинес", api:"pekinese"},
-  {name:"Пудель", api:"poodle/standard"},
-  {name:"Миниатюрный пудель", api:"poodle/miniature"},
-  {name:"Той-пудель", api:"poodle/toy"},
-  {name:"Колли", api:"collie/border"},
-  {name:"Шелти", api:"sheepdog/shetland"},
-  {name:"Староанглийская овчарка", api:"sheepdog/english"},
-  {name:"Австралийская овчарка", api:"australian/shepherd"},
-  {name:"Келпи", api:"kelpie"},
-  {name:"Маламут", api:"malamute"},
-  {name:"Кеесхонд", api:"keeshond"},
-  {name:"Веймаранер", api:"weimaraner"},
-  {name:"Визсла", api:"vizsla"},
-  {name:"Родезийский риджбек", api:"ridgeback/rhodesian"}
+{name:"Акита",api:"akita"},
+{name:"Афганская борзая",api:"hound/afghan"},
+{name:"Австралийская овчарка",api:"australian/shepherd"},
+{name:"Бассет-хаунд",api:"hound/basset"},
+{name:"Бигль",api:"beagle"},
+{name:"Бладхаунд",api:"hound/blood"},
+{name:"Боксер",api:"boxer"},
+{name:"Бордер-колли",api:"collie/border"},
+{name:"Бордер-терьер",api:"terrier/border"},
+{name:"Борзая",api:"borzoi"},
+{name:"Бостон-терьер",api:"terrier/boston"},
+{name:"Бульдог английский",api:"bulldog/english"},
+{name:"Бульдог французский",api:"bulldog/french"},
+{name:"Бультерьер",api:"terrier/american"},
+{name:"Веймаранер",api:"weimaraner"},
+{name:"Вест-хайленд-уайт-терьер",api:"terrier/westhighland"},
+{name:"Визсла",api:"vizsla"},
+{name:"Далматин",api:"dalmatian"},
+{name:"Доберман",api:"doberman"},
+{name:"Золотистый ретривер",api:"retriever/golden"},
+{name:"Ирландский сеттер",api:"setter/irish"},
+{name:"Кеесхонд",api:"keeshond"},
+{name:"Керн-терьер",api:"terrier/cairn"},
+{name:"Колли",api:"collie/border"},
+{name:"Кокер-спаниель",api:"spaniel/cocker"},
+{name:"Лабрадор",api:"labrador"},
+{name:"Маламут",api:"malamute"},
+{name:"Мальтезе",api:"maltese"},
+{name:"Мопс",api:"pug"},
+{name:"Немецкая овчарка",api:"germanshepherd"},
+{name:"Немецкий дог",api:"dane/great"},
+{name:"Ньюфаундленд",api:"newfoundland"},
+{name:"Папильон",api:"papillon"},
+{name:"Пекинес",api:"pekinese"},
+{name:"Померанский шпиц",api:"pomeranian"},
+{name:"Пудель",api:"poodle/standard"},
+{name:"Миниатюрный пудель",api:"poodle/miniature"},
+{name:"Той-пудель",api:"poodle/toy"},
+{name:"Родезийский риджбек",api:"ridgeback/rhodesian"},
+{name:"Ротвейлер",api:"rottweiler"},
+{name:"Самоед",api:"samoyed"},
+{name:"Сенбернар",api:"stbernard"},
+{name:"Сиба-ину",api:"shiba"},
+{name:"Скотч-терьер",api:"terrier/scottish"},
+{name:"Стаффордширский терьер",api:"terrier/staffordshire"},
+{name:"Уиппет",api:"whippet"},
+{name:"Хаски",api:"husky"},
+{name:"Чау-чау",api:"chow"},
+{name:"Чихуахуа",api:"chihuahua"},
+{name:"Шарпей",api:"sharpei"},
+{name:"Шелти",api:"sheepdog/shetland"},
+{name:"Ши-тцу",api:"shihtzu"},
+{name:"Эрдельтерьер",api:"airedale"},
+{name:"Йоркширский терьер",api:"terrier/yorkshire"}
 
 ];
 
 
-/* =========================
-   ОБЩЕЕ
-========================= */
+/* ===================================
+СТРАНИЦЫ
+=================================== */
 
 function openPage(id) {
 
-  document.querySelectorAll(".page")
-    .forEach(p => p.classList.remove("active"));
+  document
+    .querySelectorAll(".page")
+    .forEach(page =>
+      page.classList.remove("active")
+    );
 
-  document.getElementById(id)
+  document
+    .getElementById(id)
     .classList.add("active");
 
   window.scrollTo(0,0);
+
 }
 
 
@@ -518,56 +983,279 @@ function goHome() {
 }
 
 
-function apiURL(api) {
+/* ===================================
+API
+=================================== */
+
+function apiURL(api, count = 1) {
 
   const parts = api.split("/");
 
+  const suffix =
+    count > 1
+    ? `/images/random/${count}`
+    : `/images/random`;
+
+
   if(parts.length === 1) {
-    return `https://dog.ceo/api/breed/${parts[0]}/images/random`;
-  }
 
-  return `https://dog.ceo/api/breed/${parts[0]}/${parts[1]}/images/random`;
-}
-
-
-async function getDogImage(breed) {
-
-  try {
-
-    const response = await fetch(apiURL(breed.api));
-
-    const data = await response.json();
-
-    return data.message;
-
-  } catch(e) {
-
-    return "";
+    return (
+      `https://dog.ceo/api/breed/` +
+      `${parts[0]}${suffix}`
+    );
 
   }
+
+
+  return (
+    `https://dog.ceo/api/breed/` +
+    `${parts[0]}/${parts[1]}${suffix}`
+  );
 
 }
 
 
-/* =========================
-   СОБАКА ДНЯ
-========================= */
+/* ===================================
+ЗАГРУЗКА КАРТИНКИ
+=================================== */
+
+function preloadImage(url) {
+
+  return new Promise(resolve => {
+
+    const img = new Image();
+
+    const timeout =
+      setTimeout(
+        () => resolve(null),
+        4500
+      );
+
+
+    img.onload = () => {
+
+      clearTimeout(timeout);
+
+      resolve({
+        url,
+        width: img.naturalWidth,
+        height: img.naturalHeight
+      });
+
+    };
+
+
+    img.onerror = () => {
+
+      clearTimeout(timeout);
+
+      resolve(null);
+
+    };
+
+
+    img.src = url;
+
+  });
+
+}
+
+
+/* ===================================
+ВЫБОР БОЛЕЕ АККУРАТНОГО ФОТО
+=================================== */
+
+async function getAestheticDogImage(breed) {
+
+  for(let attempt = 0;
+      attempt < 3;
+      attempt++) {
+
+    try {
+
+      const response =
+        await fetch(
+          apiURL(breed.api, 5)
+          + "?t="
+          + Date.now()
+        );
+
+
+      if(!response.ok) {
+        continue;
+      }
+
+
+      const data =
+        await response.json();
+
+
+      let urls =
+        Array.isArray(data.message)
+        ? data.message
+        : [data.message];
+
+
+      const checked =
+        await Promise.all(
+          urls.map(preloadImage)
+        );
+
+
+      const valid =
+        checked.filter(Boolean);
+
+
+      if(valid.length === 0) {
+        continue;
+      }
+
+
+      valid.forEach(photo => {
+
+        const ratio =
+          photo.width /
+          photo.height;
+
+
+        const ratioScore =
+          Math.abs(ratio - 1.1);
+
+
+        const resolutionPenalty =
+          photo.width < 500
+          ? 1
+          : 0;
+
+
+        photo.score =
+          ratioScore +
+          resolutionPenalty;
+
+      });
+
+
+      valid.sort(
+        (a,b) =>
+          a.score - b.score
+      );
+
+
+      return valid[0].url;
+
+    }
+
+    catch(error) {
+
+      console.log(
+        "Фото не загрузилось",
+        error
+      );
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+/* ===================================
+ПОКАЗАТЬ ФОТО КРАСИВО
+=================================== */
+
+async function setDogPhoto(
+  imageId,
+  errorId,
+  breed
+) {
+
+  const image =
+    document.getElementById(imageId);
+
+  const error =
+    document.getElementById(errorId);
+
+
+  image.classList.remove("loaded");
+
+  image.removeAttribute("src");
+
+  error.style.display = "none";
+
+
+  const url =
+    await getAestheticDogImage(breed);
+
+
+  if(!url) {
+
+    error.style.display = "flex";
+
+    return false;
+
+  }
+
+
+  image.onload = () => {
+
+    image.classList.add("loaded");
+
+    error.style.display = "none";
+
+  };
+
+
+  image.onerror = () => {
+
+    error.style.display = "flex";
+
+  };
+
+
+  image.src = url;
+
+  return true;
+
+}
+
+
+/* ===================================
+СОБАКА ДНЯ
+=================================== */
 
 async function showDogOfDay() {
 
   openPage("dogday");
 
-  const today = new Date();
 
-  const index =
-    (today.getFullYear() * 372 +
-     today.getMonth() * 31 +
-     today.getDate())
-     % breeds.length;
+  const today =
+    new Date();
 
-  const breed = breeds[index];
+
+  const index = (
+
+    today.getFullYear() * 372
+
+    +
+
+    today.getMonth() * 31
+
+    +
+
+    today.getDate()
+
+  ) % breeds.length;
+
+
+  const breed =
+    breeds[index];
+
 
   const months = [
+
     "января",
     "февраля",
     "марта",
@@ -580,148 +1268,295 @@ async function showDogOfDay() {
     "октября",
     "ноября",
     "декабря"
+
   ];
 
-  document.getElementById("dayDate").innerText =
-    `${today.getDate()} ${months[today.getMonth()]} — собака дня`;
 
-  document.getElementById("dayBreed").innerText =
+  document
+    .getElementById("dayDate")
+    .innerText =
+
+    `${today.getDate()} ` +
+    `${months[today.getMonth()]}`;
+
+
+  document
+    .getElementById("dayBreed")
+    .innerText =
+
     breed.name;
 
-  document.getElementById("dayText").innerText =
-    `Сегодня DogAtlas выбрал породу «${breed.name}» 🐾`;
 
-  document.getElementById("dayImage").src =
-    await getDogImage(breed);
+  document
+    .getElementById("dayText")
+    .innerText =
+
+    `Сегодня собака дня — ` +
+    `${breed.name} 🐾`;
+
+
+  await setDogPhoto(
+    "dayImage",
+    "dayError",
+    breed
+  );
 
 }
 
 
-/* =========================
-   УГАДАЙ ПОРОДУ
-========================= */
+/* ===================================
+УГАДАЙ ПОРОДУ
+=================================== */
 
-let currentGuess;
+let currentGuess = null;
+
 let guessScore = 0;
+
+let guessTotal = 0;
 
 
 function startGuess() {
 
   guessScore = 0;
-
-  document.getElementById("guessScore").innerText =
-    "Угадано: 0";
+  guessTotal = 0;
 
   openPage("guess");
+
+  updateGuessScore();
 
   newGuess();
 
 }
 
 
+function updateGuessScore() {
+
+  document
+    .getElementById("guessScore")
+    .innerText =
+
+    `Угадано: ${guessScore} ` +
+    `из ${guessTotal}`;
+
+}
+
+
 async function newGuess() {
 
-  document.getElementById("guessMessage").innerText = "";
+  document
+    .getElementById("guessMessage")
+    .innerText = "";
 
-  document.getElementById("nextGuess").style.display = "none";
 
-  const answersBox =
-    document.getElementById("guessAnswers");
+  document
+    .getElementById("nextGuess")
+    .style.display = "none";
 
-  answersBox.innerHTML =
-    '<div class="loading">Загружаю собаку... 🐾</div>';
+
+  const box =
+    document
+      .getElementById("guessAnswers");
+
+
+  box.innerHTML =
+    `<div class="loading-text">
+       Загружаю собаку… 🐾
+     </div>`;
+
 
   currentGuess =
-    breeds[Math.floor(Math.random() * breeds.length)];
+    breeds[
+      Math.floor(
+        Math.random()
+        * breeds.length
+      )
+    ];
 
-  document.getElementById("guessImage").src =
-    await getDogImage(currentGuess);
+
+  const loaded =
+    await setDogPhoto(
+      "guessImage",
+      "guessError",
+      currentGuess
+    );
 
 
-  let options = [currentGuess];
+  if(!loaded) {
+
+    box.innerHTML =
+
+      `<button
+         class="button"
+         onclick="newGuess()">
+
+         Попробовать другую собаку
+
+       </button>`;
+
+    return;
+
+  }
+
+
+  let options =
+    [currentGuess];
+
 
   while(options.length < 4) {
 
     const randomBreed =
-      breeds[Math.floor(Math.random() * breeds.length)];
+      breeds[
+        Math.floor(
+          Math.random()
+          * breeds.length
+        )
+      ];
 
-    if(!options.includes(randomBreed)) {
+
+    if(
+      !options.some(
+        item =>
+          item.name
+          === randomBreed.name
+      )
+    ) {
+
       options.push(randomBreed);
+
     }
 
   }
 
 
-  options.sort(() => Math.random() - .5);
+  options.sort(
+    () =>
+      Math.random() - .5
+  );
 
-  answersBox.innerHTML = "";
+
+  box.innerHTML = "";
 
 
   options.forEach(breed => {
 
-    const btn = document.createElement("button");
+    const button =
+      document.createElement("button");
 
-    btn.className = "answer";
 
-    btn.innerText = breed.name;
+    button.className =
+      "answer";
 
-    btn.onclick = () =>
-      checkGuess(breed, btn);
 
-    answersBox.appendChild(btn);
+    button.innerText =
+      breed.name;
+
+
+    button.onclick =
+      () =>
+        checkGuess(
+          breed,
+          button
+        );
+
+
+    box.appendChild(button);
 
   });
 
 }
 
 
-function checkGuess(selected, clickedButton) {
+function checkGuess(
+  selected,
+  clickedButton
+) {
 
   const buttons =
-    document.querySelectorAll("#guessAnswers .answer");
+    document.querySelectorAll(
+      "#guessAnswers .answer"
+    );
 
-  buttons.forEach(b => b.disabled = true);
+
+  buttons.forEach(
+    button =>
+      button.disabled = true
+  );
 
 
-  if(selected === currentGuess) {
+  guessTotal++;
+
+
+  if(
+    selected.name
+    === currentGuess.name
+  ) {
 
     guessScore++;
 
-    clickedButton.classList.add("correct");
+    clickedButton
+      .classList
+      .add("correct");
 
-    document.getElementById("guessMessage").innerText =
+
+    document
+      .getElementById(
+        "guessMessage"
+      )
+      .innerText =
+
       "✅ Правильно!";
 
-  } else {
+  }
 
-    clickedButton.classList.add("wrong");
+  else {
 
-    document.getElementById("guessMessage").innerText =
-      `❌ Это ${currentGuess.name}`;
+    clickedButton
+      .classList
+      .add("wrong");
 
-    buttons.forEach(btn => {
 
-      if(btn.innerText === currentGuess.name) {
-        btn.classList.add("correct");
+    buttons.forEach(
+      button => {
+
+        if(
+          button.innerText
+          === currentGuess.name
+        ) {
+
+          button
+            .classList
+            .add("correct");
+
+        }
+
       }
+    );
 
-    });
+
+    document
+      .getElementById(
+        "guessMessage"
+      )
+      .innerText =
+
+      `Это ${currentGuess.name} 🐶`;
 
   }
 
 
-  document.getElementById("guessScore").innerText =
-    `Угадано: ${guessScore}`;
+  updateGuessScore();
 
-  document.getElementById("nextGuess").style.display =
-    "block";
+
+  document
+    .getElementById("nextGuess")
+    .style.display = "block";
 
 }
 
 
-/* =========================
-   СЛУЧАЙНАЯ СОБАКА
-========================= */
+/* ===================================
+СЛУЧАЙНАЯ СОБАКА
+=================================== */
 
 function showRandomDog() {
 
@@ -735,22 +1570,44 @@ function showRandomDog() {
 async function loadRandomDog() {
 
   const breed =
-    breeds[Math.floor(Math.random() * breeds.length)];
+    breeds[
+      Math.floor(
+        Math.random()
+        * breeds.length
+      )
+    ];
 
-  document.getElementById("randomBreed").innerText =
+
+  document
+    .getElementById(
+      "randomBreed"
+    )
+    .innerText =
+
     breed.name;
 
-  document.getElementById("randomImage").src =
-    await getDogImage(breed);
+
+  await setDogPhoto(
+    "randomImage",
+    "randomError",
+    breed
+  );
 
 }
 
 
-/* =========================
-   КАТАЛОГ
-========================= */
+/* ===================================
+КАТАЛОГ
+=================================== */
 
 function openCatalog() {
+
+  document
+    .getElementById(
+      "breedSearch"
+    )
+    .value = "";
+
 
   openPage("catalog");
 
@@ -761,172 +1618,230 @@ function openCatalog() {
 
 function renderCatalog() {
 
-  const search =
-    document.getElementById("breedSearch")
-    .value
-    .toLowerCase();
+  const query =
+    document
+      .getElementById(
+        "breedSearch"
+      )
+      .value
+      .toLowerCase()
+      .trim();
+
 
   const container =
-    document.getElementById("catalogList");
+    document
+      .getElementById(
+        "catalogList"
+      );
+
 
   container.innerHTML = "";
 
 
-  breeds
-    .filter(breed =>
-      breed.name.toLowerCase().includes(search)
-    )
-    .forEach(breed => {
+  const filtered =
+    breeds
+      .filter(
+        breed =>
+          breed.name
+            .toLowerCase()
+            .includes(query)
+      )
+      .sort(
+        (a,b) =>
+          a.name.localeCompare(
+            b.name,
+            "ru"
+          )
+      );
+
+
+  filtered.forEach(
+    breed => {
 
       const card =
-        document.createElement("div");
+        document.createElement(
+          "div"
+        );
+
 
       card.className =
         "breed-card";
 
+
       card.innerText =
         breed.name;
 
+
       card.onclick =
-        () => showBreed(breed);
+        () =>
+          showBreed(
+            breed
+          );
 
-      container.appendChild(card);
 
-    });
+      container
+        .appendChild(card);
+
+    }
+  );
 
 }
 
 
+/* ===================================
+СТРАНИЦА ПОРОДЫ
+=================================== */
+
 async function showBreed(breed) {
 
-  openPage("breedDetail");
+  openPage(
+    "breedDetail"
+  );
 
-  document.getElementById("detailBreed").innerText =
+
+  document
+    .getElementById(
+      "detailBreed"
+    )
+    .innerText =
+
     breed.name;
 
-  document.getElementById("detailImage").src =
-    await getDogImage(breed);
+
+  await setDogPhoto(
+    "detailImage",
+    "detailError",
+    breed
+  );
 
 
-  document.getElementById("detailAnother").onclick =
+  document
+    .getElementById(
+      "detailAnother"
+    )
+    .onclick =
+
     async () => {
 
-      document.getElementById("detailImage").src =
-        await getDogImage(breed);
+      await setDogPhoto(
+        "detailImage",
+        "detailError",
+        breed
+      );
 
     };
 
 }
 
 
-/* =========================
-   ТЕСТ
-========================= */
+/* ===================================
+ТЕСТ
+=================================== */
 
 const quizQuestions = [
 
-  {
-    q: "Как выглядит твой идеальный выходной?",
-    answers: [
-      ["Гулять с друзьями", "labrador"],
-      ["Уехать навстречу приключениям", "husky"],
-      ["Лежать дома и отдыхать", "pug"],
-      ["Заняться чем-то умным", "collie"]
-    ]
-  },
+{
+q:"Как выглядит твой идеальный выходной?",
+answers:[
+["Гулять и встречаться с друзьями","labrador"],
+["Уехать куда-нибудь без плана","husky"],
+["Уютно сидеть дома","pug"],
+["Заняться чем-то интересным и полезным","collie"]
+]
+},
 
-  {
-    q: "Что для тебя важнее всего?",
-    answers: [
-      ["Друзья и близкие", "labrador"],
-      ["Свобода", "husky"],
-      ["Комфорт", "pug"],
-      ["Достижения", "collie"]
-    ]
-  },
+{
+q:"Что для тебя важнее всего?",
+answers:[
+["Близкие люди","labrador"],
+["Свобода","husky"],
+["Комфорт и спокойствие","pug"],
+["Развитие и новые знания","collie"]
+]
+},
 
-  {
-    q: "На вечеринке ты скорее...",
-    answers: [
-      ["Общаюсь со всеми", "labrador"],
-      ["Придумаю какую-нибудь авантюру", "husky"],
-      ["Сижу с любимыми людьми", "pug"],
-      ["Наблюдаю и всё анализирую", "collie"]
-    ]
-  },
+{
+q:"Ты оказалась на большой вечеринке. Что делаешь?",
+answers:[
+["Общаюсь почти со всеми","labrador"],
+["Придумаю какую-нибудь авантюру","husky"],
+["Найду пару любимых людей и останусь с ними","pug"],
+["Сначала осмотрюсь и пойму, что здесь происходит","collie"]
+]
+},
 
-  {
-    q: "Если появилась сложная задача, ты...",
-    answers: [
-      ["Попрошу помощи", "labrador"],
-      ["Рискну и попробую", "husky"],
-      ["Отложу на потом 😅", "pug"],
-      ["Буду решать, пока не получится", "collie"]
-    ]
-  },
+{
+q:"Перед тобой сложная задача. Твоя реакция?",
+answers:[
+["Позову кого-нибудь и решим вместе","labrador"],
+["Начну делать, разберусь по ходу","husky"],
+["Можно сначала немного отдохнуть?","pug"],
+["Составлю план и спокойно разберусь","collie"]
+]
+},
 
-  {
-    q: "Что звучит больше всего как ты?",
-    answers: [
-      ["Добрая и общительная", "labrador"],
-      ["Независимая и энергичная", "husky"],
-      ["Спокойная и уютная", "pug"],
-      ["Умная и внимательная", "collie"]
-    ]
-  },
+{
+q:"Как тебя чаще всего можно описать?",
+answers:[
+["Добрая и общительная","labrador"],
+["Независимая и энергичная","husky"],
+["Спокойная и любящая уют","pug"],
+["Внимательная и сообразительная","collie"]
+]
+},
 
-  {
-    q: "Куда бы ты скорее отправилась?",
-    answers: [
-      ["На пляж с друзьями", "labrador"],
-      ["В горы", "husky"],
-      ["В красивый отель", "pug"],
-      ["В новый интересный город", "collie"]
-    ]
-  },
+{
+q:"Куда ты скорее отправишься?",
+answers:[
+["На пляж с друзьями","labrador"],
+["В горы или на спонтанное приключение","husky"],
+["В красивый уютный отель","pug"],
+["В новый город, который хочется исследовать","collie"]
+]
+},
 
-  {
-    q: "Как ты принимаешь решения?",
-    answers: [
-      ["Советуюсь с близкими", "labrador"],
-      ["Делаю как чувствую", "husky"],
-      ["Выбираю самый комфортный вариант", "pug"],
-      ["Всё продумываю", "collie"]
-    ]
-  }
+{
+q:"Как ты обычно принимаешь важные решения?",
+answers:[
+["Советуюсь с близкими","labrador"],
+["Доверяю ощущениям","husky"],
+["Выбираю вариант, где мне спокойнее","pug"],
+["Сравниваю варианты и всё обдумываю","collie"]
+]
+}
 
 ];
 
 
 const quizDogs = {
 
-  labrador: {
-    name: "Лабрадор 🦮",
-    api: "labrador",
-    text:
-      "Ты открытая, дружелюбная и ценишь своих людей. С тобой редко бывает скучно."
-  },
+labrador:{
+name:"Лабрадор 🦮",
+api:"labrador",
+text:
+"Ты открытая, дружелюбная и очень ценишь своих людей. Тебе важны эмоции, общение и ощущение, что рядом есть свои."
+},
 
-  husky: {
-    name: "Хаски 🐺",
-    api: "husky",
-    text:
-      "Ты любишь свободу, приключения и умеешь идти своей дорогой."
-  },
+husky:{
+name:"Хаски 🐺",
+api:"husky",
+text:
+"Ты самостоятельная, энергичная и любишь свободу. Тебе сложно долго сидеть на одном месте — хочется впечатлений и чего-нибудь нового."
+},
 
-  pug: {
-    name: "Мопс 🐶",
-    api: "pug",
-    text:
-      "Ты умеешь ценить уют, вкусную еду и спокойные моменты жизни."
-  },
+pug:{
+name:"Мопс 🐶",
+api:"pug",
+text:
+"Ты умеешь наслаждаться уютом и маленькими приятностями. Комфорт, вкусная еда и любимые люди — отличный набор для счастья."
+},
 
-  collie: {
-    name: "Бордер-колли 🐾",
-    api: "collie/border",
-    text:
-      "Ты любознательная, быстро соображаешь и любишь, когда происходит что-то интересное."
-  }
+collie:{
+name:"Бордер-колли 🐾",
+api:"collie/border",
+text:
+"Ты любознательная, наблюдательная и быстро разбираешься в новом. Когда тебе действительно интересно, остановить тебя сложно."
+}
 
 };
 
@@ -941,11 +1856,14 @@ function startQuiz() {
   quizStep = 0;
 
   quizPoints = {
+
     labrador:0,
     husky:0,
     pug:0,
     collie:0
+
   };
+
 
   openPage("quiz");
 
@@ -957,38 +1875,71 @@ function startQuiz() {
 function showQuizQuestion() {
 
   const question =
-    quizQuestions[quizStep];
+    quizQuestions[
+      quizStep
+    ];
 
-  document.getElementById("quizProgress").innerText =
-    `Вопрос ${quizStep + 1} из ${quizQuestions.length}`;
 
-  document.getElementById("quizQuestion").innerText =
+  document
+    .getElementById(
+      "quizProgress"
+    )
+    .innerText =
+
+    `Вопрос ${quizStep + 1} ` +
+    `из ${quizQuestions.length}`;
+
+
+  document
+    .getElementById(
+      "quizQuestion"
+    )
+    .innerText =
+
     question.q;
 
 
   const answers =
-    document.getElementById("quizAnswers");
+    document
+      .getElementById(
+        "quizAnswers"
+      );
+
 
   answers.innerHTML = "";
 
 
-  question.answers.forEach(answer => {
+  question.answers
+    .forEach(answer => {
 
-    const btn =
-      document.createElement("button");
+      const button =
+        document
+          .createElement(
+            "button"
+          );
 
-    btn.className =
-      "answer";
 
-    btn.innerText =
-      answer[0];
+      button.className =
+        "answer";
 
-    btn.onclick =
-      () => selectQuizAnswer(answer[1]);
 
-    answers.appendChild(btn);
+      button.innerText =
+        answer[0];
 
-  });
+
+      button.onclick =
+        () =>
+          selectQuizAnswer(
+            answer[1]
+          );
+
+
+      answers
+        .appendChild(
+          button
+        );
+
+    });
 
 }
 
@@ -1000,11 +1951,16 @@ function selectQuizAnswer(type) {
   quizStep++;
 
 
-  if(quizStep >= quizQuestions.length) {
+  if(
+    quizStep
+    >= quizQuestions.length
+  ) {
 
     finishQuiz();
 
-  } else {
+  }
+
+  else {
 
     showQuizQuestion();
 
@@ -1015,30 +1971,51 @@ function selectQuizAnswer(type) {
 
 async function finishQuiz() {
 
-  let winner =
-    Object.keys(quizPoints)
-    .reduce((a,b) =>
-      quizPoints[a] >= quizPoints[b]
-      ? a
-      : b
+  const winner =
+    Object.keys(
+      quizPoints
+    )
+    .reduce(
+      (a,b) =>
+        quizPoints[a]
+        >= quizPoints[b]
+        ? a
+        : b
     );
 
 
   const dog =
     quizDogs[winner];
 
-  openPage("quizResultPage");
+
+  openPage(
+    "quizResultPage"
+  );
 
 
-  document.getElementById("finalBreed").innerText =
+  document
+    .getElementById(
+      "finalBreed"
+    )
+    .innerText =
+
     `Ты — ${dog.name}`;
 
-  document.getElementById("finalText").innerText =
+
+  document
+    .getElementById(
+      "finalText"
+    )
+    .innerText =
+
     dog.text;
 
 
-  document.getElementById("finalImage").src =
-    await getDogImage(dog);
+  await setDogPhoto(
+    "finalImage",
+    "finalError",
+    dog
+  );
 
 }
 
