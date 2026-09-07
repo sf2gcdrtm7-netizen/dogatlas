@@ -558,6 +558,60 @@ h2 {
     height: 300px;
   }
 }
+  @media(max-width:390px) {
+  h1 {
+    font-size: 36px;
+  }
+
+  .photo-box {
+    height: 300px;
+  }
+}
+
+/* ВСТАВЬ СЮДА СТИЛИ ПРОФИЛЯ */
+
+.profile-mini {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  margin: 16px 0 22px;
+  background: rgba(255, 252, 247, 0.94);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(80, 55, 35, 0.08);
+  cursor: pointer;
+}
+
+.profile-mini-photo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eadfce;
+}
+
+.profile-mini-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-mini-name {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.profile-mini-username {
+  margin-top: 2px;
+  font-size: 13px;
+  color: #8c7c6c;
+}
+
+.profile-mini-arrow {
+  font-size: 28px;
+  color: #9a8b7c;
+}
+
+</style>
 </style>
 </head>
 
@@ -575,7 +629,27 @@ h2 {
   <div class="subtitle">
     Твой маленький мир собак
   </div>
+<div class="profile-mini" onclick="openProfile()">
+  <img
+    id="miniProfilePhoto"
+    class="profile-mini-photo"
+    src=""
+    alt="Аватар"
+  >
 
+  <div class="profile-mini-info">
+    <div id="miniProfileName" class="profile-mini-name">
+      Пользователь
+    </div>
+
+    <div id="miniProfileUsername" class="profile-mini-username">
+      @telegram
+    </div>
+  </div>
+
+  <div class="profile-mini-arrow">›</div>
+</div>
+  
   <div class="menu-card" onclick="showDogOfDay()">
     <span class="emoji">🌟</span>
     Собака дня
@@ -2814,6 +2888,37 @@ createMyProfile();
     alert("Ошибка сохранения");
   }
 }
+  function fillMiniProfile() {
+  const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
+
+  if (!user) return;
+
+  const nameEl = document.getElementById("miniProfileName");
+  const usernameEl = document.getElementById("miniProfileUsername");
+  const photoEl = document.getElementById("miniProfilePhoto");
+
+  if (nameEl) {
+    nameEl.innerText =
+      user.first_name ||
+      user.username ||
+      "Пользователь";
+  }
+
+  if (usernameEl) {
+    usernameEl.innerText =
+      user.username ? `@${user.username}` : "Telegram";
+  }
+
+  if (photoEl) {
+    if (user.photo_url) {
+      photoEl.src = user.photo_url;
+    } else {
+      photoEl.style.display = "none";
+    }
+  }
+}
+
+fillMiniProfile();
 </script>
 
 </body>
