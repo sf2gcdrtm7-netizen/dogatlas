@@ -610,8 +610,98 @@ h2 {
   font-size: 28px;
   color: #9a8b7c;
 }
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px;
+  margin: 18px 0 26px;
+  background: rgba(255, 252, 247, 0.95);
+  border-radius: 24px;
+  box-shadow: 0 8px 24px rgba(70, 50, 35, 0.08);
+}
 
-</style>
+.profile-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #eadfce;
+}
+
+.profile-user-info {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.profile-username {
+  margin-top: 4px;
+  font-size: 15px;
+  color: #8c7c6c;
+}
+
+.saved-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 4px 14px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.saved-dogs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.saved-dog-post {
+  overflow: hidden;
+  background: rgba(255, 252, 247, 0.96);
+  border-radius: 18px;
+  box-shadow: 0 5px 18px rgba(70, 50, 35, 0.07);
+}
+
+.saved-dog-post img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+}
+
+.saved-dog-name {
+  padding: 9px 10px 11px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.dog-photo-wrap {
+  position: relative;
+}
+
+.dog-heart {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 5;
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.88);
+  font-size: 25px;
+  line-height: 42px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.10);
+}
+
+.dog-heart.saved {
+  color: #e34b56;
+}
 </style>
 </head>
 
@@ -836,14 +926,18 @@ h2 {
       class="breed-title">
     </div>
 
-    <div class="photo-box">
+   <div class="photo-box dog-photo-wrap">
 
       <img
         id="randomImage"
         class="dog-img"
         alt="Случайная собака">
-<button class="action-btn" onclick="saveRandomDog()">
-  ♡ Сохранить
+        
+        <button
+  id="randomHeart"
+  class="dog-heart"
+  onclick="saveRandomDog(this)">
+  ♡
 </button>
       
       <div
@@ -2866,13 +2960,15 @@ window.scrollTo(0, 0);
     savedDogsEl.innerHTML =
       "<p>Ошибка загрузки профиля</p>";
   }
-}
-  async function saveRandomDog() {
-  const breed = document.getElementById("randomBreed")?.innerText;
-  const image = document.getElementById("randomImage")?.src;
+  
+  async function saveRandomDog(button) {
+  const breed =
+    document.getElementById("randomBreed")?.innerText;
+
+  const image =
+    document.getElementById("randomImage")?.src;
 
   if (!breed || !image) {
-    alert("Сначала загрузи собаку 🐶");
     return;
   }
 
@@ -2883,12 +2979,11 @@ window.scrollTo(0, 0);
     });
 
     if (data.ok) {
-      alert("Собачка сохранена в профиль ❤️");
-    } else {
-      alert("Не получилось сохранить собаку");
+      button.innerText = "♥";
+      button.classList.add("saved");
     }
   } catch (error) {
-    alert("Ошибка сохранения");
+    console.log("Ошибка сохранения:", error);
   }
 }
   function fillMiniProfile() {
