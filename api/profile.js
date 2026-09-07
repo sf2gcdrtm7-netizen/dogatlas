@@ -127,6 +127,28 @@ export default async function handler(req, res) {
       });
     }
 
+if (action === "delete_dog") {
+  const { id } = req.body || {};
+
+  if (!id) {
+    return res.status(400).json({
+      ok: false,
+      error: "Dog id missing"
+    });
+  }
+
+  await supabase(
+    `saved_dogs?id=eq.${id}&telegram_id=eq.${telegramId}`,
+    {
+      method: "DELETE"
+    }
+  );
+
+  return res.status(200).json({
+    ok: true
+  });
+}
+
     if (action === "get_profile") {
       const profile = await supabase(
         `profiles?telegram_id=eq.${telegramId}&limit=1`
