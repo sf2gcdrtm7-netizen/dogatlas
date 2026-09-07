@@ -935,6 +935,8 @@ cursor: pointer;
 
 <div class="friends-box">
   <div class="friends-title">Друзья</div>
+<div id="friendRequests"></div>
+
 
   <div class="friend-search-row">
     <input
@@ -3439,6 +3441,73 @@ async function loadFriends() {
   }
 }
 
+async function loadFriendRequests() {
+  const box = document.getElementById("friendRequests");
+
+  if (!box) return;
+
+  try {
+    const data = await dogAtlasProfileApi("get_friend_requests");
+
+    if (!data.ok || !data.requests || data.requests.length === 0) {
+      box.innerHTML = "";
+      return;
+    }
+
+    box.innerHTML = data.requests.map(item => {
+      const user = item.user;
+
+      if (!user) return "";
+
+      return `
+        <div class="friend-result">
+          <img
+            class="friend-avatar"
+            src="${user.photo_url || ""}"
+            alt=""
+          >
+
+          <div class="friend-result-info">
+            <div class="friend-result-name">
+              ${user.first_name || "Пользователь"}
+            </div>
+
+            <div class="friend-result-username">
+              @${user.username || ""}
+            </div>
+          </div>
+
+          <button
+            class="friend-add-button"
+            onclick="acceptFriend(${item.id})">
+            Принять
+          </button>
+        </div>
+      `;
+    }).join("");
+
+  } catch (error) {
+    console.log("Ошибка заявок:", error);
+  }
+}
+
+async function acceptFriend(requestId) {
+  try {
+    const data = await dogAtlasProfileApi("accept_friend", {
+      request_id: requestId
+    });
+
+    if (data.ok) {
+      loadFriendRequests();
+      loadFriends();
+    }
+  } catch (error) {
+    console.log("Ошибка принятия заявки:", error);
+  }
+}
+
+loadFriendRequests();
+loadFriends();
 fillMiniProfile();
 </script>
 
