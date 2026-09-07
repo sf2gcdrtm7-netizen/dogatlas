@@ -197,13 +197,110 @@ if (action === "add_friend") {
     });
   }
 
+  if (friend_telegram_id === telegramId) {
+    return res.status(400).json({
+      ok: false,
+      error: "You cannot add yourself"
+    });
+  }
+
+  const existing = await supabase(
+    `friends?telegram_id=eq.${telegramId}&friend_telegram_id=eq.${friend_telegram_id}&limit=1`
+  );
+
+  if (existing?.length) {
+    return res.status(200).json({
+      ok: false,
+      error: "Request already exists"
+    });
+  }
+
   await supabase("friends", {
     method: "POST",
     body: JSON.stringify({
       telegram_id: telegramId,
-      friend_telegram_id
+      friend_telegram_id,
+      status: "pending"
     })
   });
+
+  return res.status(200).json({
+    ok: true,
+    status: "pending"
+  });
+}
+
+}
+
+if (action === "get_friend_requests") {
+  const requests = await supabase(
+    `friends?friend_telegram_id=eq.${telegramId}&status=eq.pending&order=created_at.desc`
+  );
+
+  if (!requests || requests.length === 0) {
+    return res.status(200).json({
+      ok: true,
+      requests: []
+    });
+  }
+
+  const ids = requests
+    .map(item => item.telegram_id)
+    .join(",");
+
+  const users = await supabase(
+    `profiles?telegram_id=in.(${ids})`
+  );
+
+  const result = requests.map(request => {
+    const user = users.find(
+      item => item.telegram_id === request.telegram_id
+    );
+
+    return {
+      id: request.id,
+      user
+    };
+  });
+
+  return res.status(200).json({
+    ok: true,
+    requests: result
+  });
+}
+
+if (action === "accept_friend") {
+  const { request_id } = req.body || {};
+
+  if (!request_id) {
+    return res.status(400).json({
+      ok: false,
+      error: "Request id missing"
+    });
+  }
+
+  const requests = await supabase(
+    `friends?id=eq.${request_id}&friend_telegram_id=eq.${telegramId}&status=eq.pending&limit=1`
+  );
+
+  const request = requests?.[0];
+
+  if (!request) {
+    return res.status(404).json({
+      ok: false,
+      error: "Request not found"
+    });
+  }
+
+  await supabase(
+    `friends?id=eq.${request_id}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({
+        status: "accepted"
+      })
+    }
+  );
 
   return res.status(200).json({
     ok: true
@@ -212,7 +309,7 @@ if (action === "add_friend") {
 
 if (action === "get_friends") {
   const links = await supabase(
-    `friends?telegram_id=eq.${telegramId}&order=created_at.desc`
+    `friends?status=eq.accepted&or=(telegram_id.eq.${telegramId},friend_telegram_id.eq.${telegramId})&order=created_at.desc`
   );
 
   if (!links || links.length === 0) {
@@ -222,12 +319,14 @@ if (action === "get_friends") {
     });
   }
 
-  const ids = links
-    .map(item => item.friend_telegram_id)
-    .join(",");
+  const ids = links.map(item => {
+    return item.telegram_id === telegramId
+      ? item.friend_telegram_id
+      : item.telegram_id;
+  });
 
   const friends = await supabase(
-    `profiles?telegram_id=in.(${ids})`
+    `profiles?telegram_id=in.(${ids.join(",")})`
   );
 
   return res.status(200).json({
