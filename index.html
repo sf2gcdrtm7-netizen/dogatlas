@@ -2354,10 +2354,15 @@ async function loadRandomDog() {
 
   try {
     const response = await fetch(
-      apiURL(breed.api, 1) + "?t=" + Date.now()
+      apiURL(breed.api, 3) + "?t=" + Date.now()
     );
 
     const data = await response.json();
+   const photos = Array.isArray(data.message)
+  ? data.message
+  : [data.message];
+
+const bestPhoto = photos[0];
 
     if (!response.ok || !data.message) {
       throw new Error("Фото не загрузилось");
@@ -2372,7 +2377,7 @@ async function loadRandomDog() {
       error.style.display = "flex";
     };
 
-    image.src = data.message;
+  image.src = bestPhoto;
 
   } catch (errorLoad) {
     console.log("Ошибка случайной собаки:", errorLoad);
