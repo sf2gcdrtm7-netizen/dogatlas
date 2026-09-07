@@ -162,7 +162,7 @@ if (action === "find_user") {
   const cleanUsername = username.replace("@", "");
 
   const users = await supabase(
-    `profiles?username=eq.${encodeURIComponent(cleanUsername)}&limit=1`
+    `profiles?username=ilike.${encodeURIComponent(cleanUsername)}&limit=1`
   );
 
   const foundUser = users?.[0] || null;
