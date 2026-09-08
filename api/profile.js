@@ -368,6 +368,62 @@ if (action === "get_reactions") {
   });
 }
 
+if (action === "send_reaction") {
+  const { receiver_telegram_id, reaction } = req.body || {};
+
+  if (!receiver_telegram_id || !reaction) {
+    return res.status(400).json({
+      ok: false,
+      error: "Reaction data missing"
+    });
+  }
+
+  await supabase("friend_reactions", {
+    method: "POST",
+    body: JSON.stringify({
+      sender_telegram_id: telegramId,
+      receiver_telegram_id,
+      reaction
+    })
+  });
+
+  return res.status(200).json({
+    ok: true
+  });
+}
+
+if (action === "get_reactions") {
+  const reactions = await supabase(
+    `friend_reactions?receiver_telegram_id=eq.${telegramId}&order=created_at.desc&limit=20`
+  );
+
+  if (!reactions || reactions.length === 0) {
+    return res.status(200).json({
+      ok: true,
+      reactions: []
+    });
+  }
+
+  const senderIds = [...new Set(
+    reactions.map(item => item.sender_telegram_id)
+  )];
+
+  const senders = await supabase(
+    `profiles?telegram_id=in.(${senderIds.join(",")})`
+  );
+
+  const result = reactions.map(item => ({
+    ...item,
+    sender: senders.find(
+      user => user.telegram_id === item.sender_telegram_id
+    ) || null
+  }));
+
+  return res.status(200).json({
+    ok: true,
+    reactions: result
+  });
+}
 
     if (action === "get_profile") {
       const profile = await supabase(
