@@ -971,6 +971,11 @@ flex: 0 0 82px;
     <div id="friendsPageRequests"></div>
   </div>
 
+<div class="friends-section">
+  <div class="friends-section-title">Тебе отправили</div>
+  <div id="friendsPageReactions"></div>
+</div>
+
   <div class="friends-section">
     <div class="friends-section-title">Мои друзья</div>
     <div id="friendsPageList"></div>
@@ -3452,11 +3457,62 @@ async function loadFriendsPage() {
             @${friend.username || ""}
           </div>
         </div>
+        
+        <div class="friend-reactions">
+  <button onclick="sendReaction(${friend.telegram_id}, '🐾')">🐾</button>
+  <button onclick="sendReaction(${friend.telegram_id}, '🦴')">🦴</button>
+  <button onclick="sendReaction(${friend.telegram_id}, '🎾')">🎾</button>
+</div>
+        
       </div>
     `).join("");
 
   } catch (error) {
     listEl.innerHTML = "Ошибка загрузки друзей";
+    console.log(error);
+  }
+}
+
+async function sendReaction(friendTelegramId, reaction) {
+  try {
+    const data = await dogAtlasProfileApi("send_reaction", {
+      receiver_telegram_id: friendTelegramId,
+      reaction
+    });
+
+    if (data.ok) {
+      alert(`Отправлено ${reaction}`);
+    }
+  } catch (error) {
+    console.log("Ошибка отправки реакции:", error);
+  }
+}
+
+async function loadReactionsPage() {
+  const box = document.getElementById("friendsPageReactions");
+
+  if (!box) return;
+
+  try {
+    const data = await dogAtlasProfileApi("get_reactions");
+
+    if (!data.ok || !data.reactions || data.reactions.length === 0) {
+      box.innerHTML = "Пока ничего нет";
+      return;
+    }
+
+    box.innerHTML = data.reactions.map(item => `
+      <div class="friend-result">
+        <div class="friend-result-info">
+          <div class="friend-result-name">
+            ${item.reaction}
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+  } catch (error) {
+    box.innerHTML = "Ошибка загрузки";
     console.log(error);
   }
 }
@@ -3521,6 +3577,7 @@ async function acceptFriendFromPage(requestId) {
     if (data.ok) {
       loadFriendRequestsPage();
       loadFriendsPage();
+      loadReactionsPage();
     }
   } catch (error) {
     console.log("Ошибка принятия заявки:", error);
