@@ -847,14 +847,18 @@ cursor: pointer;
 }
 
 .friends-mini-button {
-  width: 54px;
-  height: 54px;
-  flex: 0 0 54px;
+  width: 64px;
+  height: 64px;
+  flex: 0 0 64px;
   border: none;
-  border-radius: 16px;
+  border-radius: 18px;
   background: rgba(255, 252, 247, 0.96);
   box-shadow: 0 5px 18px rgba(70, 50, 35, 0.08);
-  font-size: 24px;
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
   cursor: pointer;
 }
 
@@ -923,11 +927,6 @@ cursor: pointer;
     <span class="emoji">📚</span>
     Каталог пород
   </div>
-
-<div class="menu-card" onclick="openFriends()">
-  <span class="emoji">👥</span>
-  Друзья
-</div>
 
   <div class="menu-card" onclick="startQuiz()">
     <span class="emoji">🐾</span>
