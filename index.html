@@ -7,10 +7,17 @@
 <script scr="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
+
 <style>
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
+}
+
+.received-reactions {
+  margin-top: 6px;
+  font-size: 24px;
+  letter-spacing: 4px;
 }
 
 :root {
@@ -3507,25 +3514,48 @@ async function loadReactionsPage() {
       return;
     }
 
-    box.innerHTML = data.reactions.map(item => `
-      <div class="friend-result">
-        <img
-          class="friend-avatar"
-          src="${item.sender?.photo_url || ""}"
-          alt=""
-        >
+    const grouped = {};
 
-        <div class="friend-result-info">
-          <div class="friend-result-name">
-            ${item.sender?.first_name || "Пользователь"}
-          </div>
+    data.reactions.forEach(item => {
+      const senderId = item.sender?.telegram_id || item.sender_telegram_id;
 
-          <div class="friend-result-username">
-            отправил(а) тебе ${item.reaction}
+      if (!grouped[senderId]) {
+        grouped[senderId] = {
+          sender: item.sender,
+          reactions: []
+        };
+      }
+
+      grouped[senderId].reactions.push(item.reaction);
+    });
+
+    box.innerHTML = Object.values(grouped).map(group => {
+      const sender = group.sender;
+
+      return `
+        <div class="friend-result">
+          <img
+            class="friend-avatar"
+            src="${sender?.photo_url || ""}"
+            alt=""
+          >
+
+          <div class="friend-result-info">
+            <div class="friend-result-name">
+              ${sender?.first_name || "Пользователь"}
+            </div>
+
+            <div class="friend-result-username">
+              ${sender?.username ? `@${sender.username}` : ""}
+            </div>
+
+            <div class="received-reactions">
+              ${group.reactions.join(" ")}
+            </div>
           </div>
         </div>
-      </div>
-    `).join("");
+      `;
+    }).join("");
 
   } catch (error) {
     box.innerHTML = "Ошибка загрузки";
