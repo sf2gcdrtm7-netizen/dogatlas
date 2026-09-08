@@ -20,6 +20,48 @@
   letter-spacing: 4px;
 }
 
+.reaction-picker-wrap {
+  position: relative;
+}
+
+.reaction-open-btn {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 12px;
+  background: #f3efe8;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.reaction-picker {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 46px;
+  z-index: 20;
+  gap: 6px;
+  padding: 8px;
+  background: rgba(255, 252, 247, 0.98);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(70, 50, 35, 0.14);
+  white-space: nowrap;
+}
+
+.reaction-picker.show {
+  display: flex;
+}
+
+.reaction-picker button {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 11px;
+  background: #f3efe8;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 :root {
   --text: #302922;
   --muted: #8c7c6c;
@@ -3466,12 +3508,26 @@ async function loadFriendsPage() {
           </div>
         </div>
         
-      <div class="friend-reactions">
-  <button class="reaction-btn" onclick="sendReaction(${friend.telegram_id}, '❤️')">❤️</button>
-  <button class="reaction-btn" onclick="sendReaction(${friend.telegram_id}, '😇')">😇</button>
-  <button class="reaction-btn" onclick="sendReaction(${friend.telegram_id}, '😜')">😜</button>
-  <button class="reaction-btn" onclick="sendReaction(${friend.telegram_id}, '🦴')">🦴</button>
-  <button class="reaction-btn" onclick="sendReaction(${friend.telegram_id}, '🐾')">🐾</button>
+   
+      <div class="reaction-picker-wrap">
+
+  <button
+    class="reaction-open-btn"
+    onclick="toggleReactionPicker(${friend.telegram_id})">
+    🐾
+  </button>
+
+  <div
+    id="reactionPicker-${friend.telegram_id}"
+    class="reaction-picker"
+  >
+    <button onclick="sendReaction(${friend.telegram_id}, '❤️')">❤️</button>
+    <button onclick="sendReaction(${friend.telegram_id}, '😇')">😇</button>
+    <button onclick="sendReaction(${friend.telegram_id}, '😜')">😜</button>
+    <button onclick="sendReaction(${friend.telegram_id}, '🦴')">🦴</button>
+    <button onclick="sendReaction(${friend.telegram_id}, '🐾')">🐾</button>
+  </div>
+
 </div>
         
       </div>
@@ -3482,6 +3538,17 @@ async function loadFriendsPage() {
     console.log(error);
   }
 }
+
+function toggleReactionPicker(friendTelegramId) {
+  const picker = document.getElementById(
+    `reactionPicker-${friendTelegramId}`
+  );
+
+  if (!picker) return;
+
+  picker.classList.toggle("show");
+}
+
 async function sendReaction(friendTelegramId, reaction) {
   try {
     const data = await dogAtlasProfileApi("send_reaction", {
