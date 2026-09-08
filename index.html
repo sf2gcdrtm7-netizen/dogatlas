@@ -3347,6 +3347,7 @@ function openFriends() {
     window.scrollTo(0, 0);
     
     loadFriendRequestsPage();
+    loadReactionsPage();
 loadFriendsPage();
 
   }
@@ -3458,10 +3459,12 @@ async function loadFriendsPage() {
           </div>
         </div>
         
-        <div class="friend-reactions">
-  <button onclick="sendReaction(${friend.telegram_id}, '🐾')">🐾</button>
-  <button onclick="sendReaction(${friend.telegram_id}, '🦴')">🦴</button>
-  <button onclick="sendReaction(${friend.telegram_id}, '🎾')">🎾</button>
+      <div class="friend-reactions">
+  <button class="reaction-btn" onclick="sendReaction(${friend.telegram_id}, '❤️')">❤️</button>
+  <button class="reaction-btn" onclick="sendReaction(${friend.telegram_id}, '😇')">😇</button>
+  <button class="reaction-btn" onclick="sendReaction(${friend.telegram_id}, '😜')">😜</button>
+  <button class="reaction-btn" onclick="sendReaction(${friend.telegram_id}, '🦴')">🦴</button>
+  <button class="reaction-btn" onclick="sendReaction(${friend.telegram_id}, '🐾')">🐾</button>
 </div>
         
       </div>
@@ -3472,7 +3475,6 @@ async function loadFriendsPage() {
     console.log(error);
   }
 }
-
 async function sendReaction(friendTelegramId, reaction) {
   try {
     const data = await dogAtlasProfileApi("send_reaction", {
@@ -3482,11 +3484,15 @@ async function sendReaction(friendTelegramId, reaction) {
 
     if (data.ok) {
       alert(`Отправлено ${reaction}`);
+    } else {
+      alert(data.error || "Не получилось отправить");
     }
   } catch (error) {
     console.log("Ошибка отправки реакции:", error);
+    alert("Ошибка отправки");
   }
 }
+
 
 async function loadReactionsPage() {
   const box = document.getElementById("friendsPageReactions");
@@ -3503,9 +3509,19 @@ async function loadReactionsPage() {
 
     box.innerHTML = data.reactions.map(item => `
       <div class="friend-result">
+        <img
+          class="friend-avatar"
+          src="${item.sender?.photo_url || ""}"
+          alt=""
+        >
+
         <div class="friend-result-info">
           <div class="friend-result-name">
-            ${item.reaction}
+            ${item.sender?.first_name || "Пользователь"}
+          </div>
+
+          <div class="friend-result-username">
+            отправил(а) тебе ${item.reaction}
           </div>
         </div>
       </div>
@@ -3513,7 +3529,7 @@ async function loadReactionsPage() {
 
   } catch (error) {
     box.innerHTML = "Ошибка загрузки";
-    console.log(error);
+    console.log("Ошибка загрузки реакций:", error);
   }
 }
 
