@@ -834,6 +834,30 @@ cursor: pointer;
   color: white;
 }
 
+.profile-friends-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.profile-friends-row .profile-mini {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.friends-mini-button {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  border: none;
+  border-radius: 16px;
+  background: rgba(255, 252, 247, 0.96);
+  box-shadow: 0 5px 18px rgba(70, 50, 35, 0.08);
+  font-size: 24px;
+  cursor: pointer;
+}
+
 </style>
 </head>
 
@@ -851,6 +875,9 @@ cursor: pointer;
   <div class="subtitle">
     Твой маленький мир собак
   </div>
+  
+  <div class="profile-friends-row">
+  
 <div class="profile-mini" onclick="openProfile()">
   <img
     id="miniProfilePhoto"
@@ -871,7 +898,12 @@ cursor: pointer;
 
   <div class="profile-mini-arrow">›</div>
 </div>
-  
+  <button class="friends-mini-button" onclick="event.stopPropagation(); openFriends()">
+  👥
+</button>
+
+</div>
+
   <div class="menu-card" onclick="showDogOfDay()">
     <span class="emoji">🌟</span>
     Собака дня
@@ -892,6 +924,11 @@ cursor: pointer;
     Каталог пород
   </div>
 
+<div class="menu-card" onclick="openFriends()">
+  <span class="emoji">👥</span>
+  Друзья
+</div>
+
   <div class="menu-card" onclick="startQuiz()">
     <span class="emoji">🐾</span>
     Какая ты собака?
@@ -903,6 +940,43 @@ cursor: pointer;
 
 </div>
 <!-- ПРОФИЛЬ -->
+
+<div id="friendsPage" class="page">
+  <button class="back" onclick="goHome()">← Назад</button>
+
+  <div class="friends-page-title">👥 Друзья</div>
+
+  <div class="friends-section">
+    <div class="friends-section-title">Найти друга</div>
+
+    <div class="friend-search-row">
+      <input
+        id="friendsPageSearchInput"
+        class="friend-search-input"
+        type="text"
+        placeholder="@username"
+      >
+
+      <button
+        class="friend-search-button"
+        onclick="findFriendFromPage()">
+        Найти
+      </button>
+    </div>
+
+    <div id="friendsPageSearchResult"></div>
+  </div>
+
+  <div class="friends-section">
+    <div class="friends-section-title">Заявки</div>
+    <div id="friendsPageRequests"></div>
+  </div>
+
+  <div class="friends-section">
+    <div class="friends-section-title">Мои друзья</div>
+    <div id="friendsPageList"></div>
+  </div>
+</div>
 
 <div id="profile" class="page">
 
@@ -3277,6 +3351,203 @@ async function saveDetailDog(button) {
     button.innerText = "♡";
     button.classList.remove("saved");
     console.log("Ошибка сохранения:", error);
+  }
+}
+
+function openFriends() {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  const page = document.getElementById("friendsPage");
+
+  if (page) {
+    page.classList.add("active");
+    window.scrollTo(0, 0);
+    
+    loadFriendRequestsPage();
+loadFriendsPage();
+
+  }
+}
+
+async function findFriendFromPage() {
+  const input = document.getElementById("friendsPageSearchInput");
+  const resultEl = document.getElementById("friendsPageSearchResult");
+
+  const username = input?.value?.trim();
+
+  if (!username) {
+    resultEl.innerHTML = "Введите @username";
+    return;
+  }
+
+  resultEl.innerHTML = "Ищу...";
+
+  try {
+    const data = await dogAtlasProfileApi("find_user", {
+      username
+    });
+
+    if (!data.ok || !data.user) {
+      resultEl.innerHTML = "Пользователь не найден";
+      return;
+    }
+
+    const user = data.user;
+
+    resultEl.innerHTML = `
+      <div class="friend-result">
+        <img
+          class="friend-avatar"
+          src="${user.photo_url || ""}"
+          alt=""
+        >
+
+        <div class="friend-result-info">
+          <div class="friend-result-name">
+            ${user.first_name || "Пользователь"}
+          </div>
+
+          <div class="friend-result-username">
+            @${user.username || ""}
+          </div>
+        </div>
+
+        <button
+          class="friend-add-button"
+          onclick="addFriendFromPage(${user.telegram_id})">
+          Добавить
+        </button>
+      </div>
+    `;
+  } catch (error) {
+    resultEl.innerHTML = "Ошибка поиска";
+    console.log(error);
+  }
+}
+
+async function addFriendFromPage(friendTelegramId) {
+  const resultEl = document.getElementById("friendsPageSearchResult");
+
+  try {
+    const data = await dogAtlasProfileApi("add_friend", {
+      friend_telegram_id: friendTelegramId
+    });
+
+    if (data.ok) {
+      resultEl.innerHTML = "Заявка отправлена ✓";
+    } else {
+      resultEl.innerHTML = data.error || "Не получилось отправить заявку";
+    }
+  } catch (error) {
+    resultEl.innerHTML = "Ошибка добавления";
+    console.log(error);
+  }
+}
+
+async function loadFriendsPage() {
+  const listEl = document.getElementById("friendsPageList");
+
+  if (!listEl) return;
+
+  try {
+    const data = await dogAtlasProfileApi("get_friends");
+
+    if (!data.ok || !data.friends || data.friends.length === 0) {
+      listEl.innerHTML = "Пока друзей нет";
+      return;
+    }
+
+    listEl.innerHTML = data.friends.map(friend => `
+      <div class="friend-result">
+        <img
+          class="friend-avatar"
+          src="${friend.photo_url || ""}"
+          alt=""
+        >
+
+        <div class="friend-result-info">
+          <div class="friend-result-name">
+            ${friend.first_name || "Пользователь"}
+          </div>
+
+          <div class="friend-result-username">
+            @${friend.username || ""}
+          </div>
+        </div>
+      </div>
+    `).join("");
+
+  } catch (error) {
+    listEl.innerHTML = "Ошибка загрузки друзей";
+    console.log(error);
+  }
+}
+
+async function loadFriendRequestsPage() {
+  const box = document.getElementById("friendsPageRequests");
+
+  if (!box) return;
+
+  try {
+    const data = await dogAtlasProfileApi("get_friend_requests");
+
+    if (!data.ok || !data.requests || data.requests.length === 0) {
+      box.innerHTML = "Новых заявок нет";
+      return;
+    }
+
+    box.innerHTML = data.requests.map(item => {
+      const user = item.user;
+
+      if (!user) return "";
+
+      return `
+        <div class="friend-result">
+          <img
+            class="friend-avatar"
+            src="${user.photo_url || ""}"
+            alt=""
+          >
+
+          <div class="friend-result-info">
+            <div class="friend-result-name">
+              ${user.first_name || "Пользователь"}
+            </div>
+
+            <div class="friend-result-username">
+              @${user.username || ""}
+            </div>
+          </div>
+
+          <button
+            class="friend-add-button"
+            onclick="acceptFriendFromPage(${item.id})">
+            Принять
+          </button>
+        </div>
+      `;
+    }).join("");
+
+  } catch (error) {
+    box.innerHTML = "Ошибка загрузки заявок";
+    console.log(error);
+  }
+}
+
+async function acceptFriendFromPage(requestId) {
+  try {
+    const data = await dogAtlasProfileApi("accept_friend", {
+      request_id: requestId
+    });
+
+    if (data.ok) {
+      loadFriendRequestsPage();
+      loadFriendsPage();
+    }
+  } catch (error) {
+    console.log("Ошибка принятия заявки:", error);
   }
 }
 
