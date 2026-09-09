@@ -333,40 +333,6 @@ if (action === "get_friends") {
   });
 }
 
-if (action === "send_reaction") {
-  const { receiver_telegram_id, reaction } = req.body || {};
-
-  if (!receiver_telegram_id || !reaction) {
-    return res.status(400).json({
-      ok: false,
-      error: "Reaction data missing"
-    });
-  }
-
-  await supabase("friend_reactions", {
-    method: "POST",
-    body: JSON.stringify({
-      sender_telegram_id: telegramId,
-      receiver_telegram_id,
-      reaction
-    })
-  });
-
-  return res.status(200).json({
-    ok: true
-  });
-}
-
-if (action === "get_reactions") {
-  const reactions = await supabase(
-    `friend_reactions?receiver_telegram_id=eq.${telegramId}&order=created_at.desc&limit=20`
-  );
-
-  return res.status(200).json({
-    ok: true,
-    reactions: reactions || []
-  });
-}
 
 if (action === "send_reaction") {
   const { receiver_telegram_id, reaction } = req.body || {};
