@@ -1073,6 +1073,53 @@ flex: 0 0 82px;
   </div>
 </div>
 
+<div id="friendProfilePage" class="page">
+
+  <button class="back" onclick="openFriends()">
+    ← Назад
+  </button>
+
+  <div class="profile-header">
+    <img
+      id="friendProfilePhoto"
+      class="profile-photo"
+      src=""
+      alt="Аватар"
+    >
+
+    <div class="profile-user-info">
+      <div id="friendProfileName" class="profile-name">
+        Пользователь
+      </div>
+
+      <div id="friendProfileUsername" class="profile-username">
+        @telegram
+      </div>
+    </div>
+  </div>
+
+  <div class="content-card">
+    <div class="friends-section-title">
+      🏆 Рекорд угадывания
+    </div>
+
+    <div id="friendGuessRecord" class="friend-stat">
+      0
+    </div>
+  </div>
+
+  <div class="content-card">
+    <div class="friends-section-title">
+      🐶 Сохранённые собаки
+    </div>
+
+    <div id="friendSavedDogsCount" class="friend-stat">
+      0
+    </div>
+  </div>
+
+</div>
+
 <div id="profile" class="page">
 
   <button class="back" onclick="goHome()">
@@ -3684,6 +3731,55 @@ dogAtlasProfileApi("get_reactions").then(data => {
   }
 }
 
+async function openFriendProfile(friendTelegramId) {
+  document.querySelectorAll(".page").forEach(page => {
+    page.classList.remove("active");
+  });
+
+  const page = document.getElementById("friendProfilePage");
+
+  if (!page) return;
+
+  page.classList.add("active");
+  window.scrollTo(0, 0);
+
+  try {
+    const data = await dogAtlasProfileApi("get_friend_profile", {
+      friend_telegram_id: friendTelegramId
+    });
+
+    if (!data.ok || !data.profile) {
+      return;
+    }
+
+    const profile = data.profile;
+
+    document.getElementById("friendProfileName").innerText =
+      profile.first_name || "Пользователь";
+
+    document.getElementById("friendProfileUsername").innerText =
+      profile.username ? `@${profile.username}` : "";
+
+    const photo = document.getElementById("friendProfilePhoto");
+
+    if (profile.photo_url) {
+      photo.src = profile.photo_url;
+      photo.style.display = "block";
+    } else {
+      photo.style.display = "none";
+    }
+
+    document.getElementById("friendGuessRecord").innerText =
+      profile.guess_record || 0;
+
+    document.getElementById("friendSavedDogsCount").innerText =
+      data.saved_dogs_count || 0;
+
+  } catch (error) {
+    console.log("Ошибка загрузки профиля друга:", error);
+  }
+}
+
 async function findFriendFromPage() {
   const input = document.getElementById("friendsPageSearchInput");
   const resultEl = document.getElementById("friendsPageSearchResult");
@@ -3773,7 +3869,7 @@ async function loadFriendsPage() {
     }
 
     listEl.innerHTML = data.friends.map(friend => `
-      <div class="friend-result">
+     <div class="friend-result" onclick="openFriendProfile(${friend.telegram_id})">
         <img
           class="friend-avatar"
           src="${friend.photo_url || ""}"
