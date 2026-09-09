@@ -1116,6 +1116,9 @@ flex: 0 0 82px;
     <div id="friendSavedDogsCount" class="friend-stat">
       0
     </div>
+    
+    <div id="friendSavedDogsList" class="saved-dogs-grid"></div>
+    
   </div>
 
 </div>
@@ -3774,6 +3777,22 @@ async function openFriendProfile(friendTelegramId) {
 
     document.getElementById("friendSavedDogsCount").innerText =
       data.saved_dogs_count || 0;
+
+const dogsBox = document.getElementById("friendSavedDogsList");
+const dogs = data.saved_dogs || [];
+
+if (dogsBox) {
+  if (dogs.length === 0) {
+    dogsBox.innerHTML = "Пока ничего нет 🐶";
+  } else {
+    dogsBox.innerHTML = dogs.map(dog => `
+      <div class="saved-dog-post">
+        <img src="${dog.image_url}" alt="${dog.breed_name}">
+        <div class="saved-dog-name">${dog.breed_name}</div>
+      </div>
+    `).join("");
+  }
+}
 
   } catch (error) {
     console.log("Ошибка загрузки профиля друга:", error);
