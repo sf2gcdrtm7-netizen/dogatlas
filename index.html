@@ -2770,6 +2770,12 @@ function checkGuess(
 document.getElementById("guessRecord").innerText =
   `🏆 Рекорд: ${guessRecord}`;
 
+dogAtlasProfileApi("save_guess_record", {
+  guess_record: guessRecord
+}).catch(error => {
+  console.log("Ошибка сохранения рекорда:", error);
+});
+
     }
 
   }
