@@ -417,6 +417,31 @@ if (action === "save_guess_record") {
   });
 }
 
+if (action === "get_friend_profile") {
+  const { friend_telegram_id } = req.body || {};
+
+  if (!friend_telegram_id) {
+    return res.status(400).json({
+      ok: false,
+      error: "Friend id missing"
+    });
+  }
+
+  const profile = await supabase(
+    `profiles?telegram_id=eq.${friend_telegram_id}&limit=1`
+  );
+
+  const dogs = await supabase(
+    `saved_dogs?telegram_id=eq.${friend_telegram_id}`
+  );
+
+  return res.status(200).json({
+    ok: true,
+    profile: profile?.[0] || null,
+    saved_dogs_count: dogs?.length || 0
+  });
+}
+
     if (action === "get_profile") {
       const profile = await supabase(
         `profiles?telegram_id=eq.${telegramId}&limit=1`
