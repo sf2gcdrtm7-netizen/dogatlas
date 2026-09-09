@@ -2778,6 +2778,14 @@ document.getElementById("guessRecord").innerText =
 
     guessStreak = 0;
 
+guessScore = 0;
+
+document.getElementById("guessScore").innerText =
+  `Правильно: ${guessScore}`;
+
+document.getElementById("guessStreak").innerText =
+  `🔥 Серия: ${guessStreak}`;
+
     clickedButton
       .classList
       .add(
