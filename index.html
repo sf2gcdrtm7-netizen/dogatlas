@@ -3891,7 +3891,7 @@ async function loadFriendsPage() {
 
   <button
     class="reaction-open-btn"
-    onclick="toggleReactionPicker(${friend.telegram_id})">
+    onclick="event.stopPropagation(); toggleReactionPicker(${friend.telegram_id})"
     🐾
   </button>
 
@@ -3899,11 +3899,13 @@ async function loadFriendsPage() {
     id="reactionPicker-${friend.telegram_id}"
     class="reaction-picker"
   >
-    <button onclick="sendReaction(${friend.telegram_id}, '❤️')">❤️</button>
-    <button onclick="sendReaction(${friend.telegram_id}, '😇')">😇</button>
-    <button onclick="sendReaction(${friend.telegram_id}, '😜')">😜</button>
-    <button onclick="sendReaction(${friend.telegram_id}, '🦴')">🦴</button>
-    <button onclick="sendReaction(${friend.telegram_id}, '🐾')">🐾</button>
+  
+  
+    <button onclick="event.stopPropagation(); sendReaction(${friend.telegram_id}, '❤️')">
+    <button onclick="event.stopPropagation(); sendReaction(${friend.telegram_id}, '😇')">
+    <button onclick="event.stopPropagation(); sendReaction(${friend.telegram_id}, '😜')">
+    <button onclick="event.stopPropagation(); sendReaction(${friend.telegram_id}, '🦴')">
+    <button onclick="event.stopPropagation(); sendReaction(${friend.telegram_id}, '🐾')">
   </div>
 
 </div>
