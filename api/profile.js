@@ -391,6 +391,32 @@ if (action === "get_reactions") {
   });
 }
 
+if (action === "save_guess_record") {
+  const { guess_record } = req.body || {};
+
+  if (typeof guess_record !== "number") {
+    return res.status(400).json({
+      ok: false,
+      error: "Record missing"
+    });
+  }
+
+  const data = await supabase(
+    `profiles?telegram_id=eq.${telegramId}`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({
+        guess_record
+      })
+    }
+  );
+
+  return res.status(200).json({
+    ok: true,
+    profile: data?.[0] || null
+  });
+}
+
     if (action === "get_profile") {
       const profile = await supabase(
         `profiles?telegram_id=eq.${telegramId}&limit=1`
