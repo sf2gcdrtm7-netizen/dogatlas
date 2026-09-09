@@ -32,6 +32,70 @@
   box-shadow: 0 6px 20px rgba(70, 50, 35, 0.07);
 }
 
+.friends-page-title {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 18px 0 22px;
+}
+
+.friends-section {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 24px;
+  background: rgba(255, 252, 247, 0.96);
+  box-shadow: 0 8px 24px rgba(70, 50, 35, 0.07);
+}
+
+.friends-section-title {
+  font-size: 21px;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.friend-result {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 20px;
+  background: rgba(244, 237, 226, 0.85);
+  position: relative;
+}
+
+.friend-avatar {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.friend-result-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.friend-result-name {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.friend-result-username {
+  margin-top: 2px;
+  font-size: 14px;
+  color: #8c7c6c;
+}
+
+.reaction-open-btn {
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255,255,255,.9);
+  font-size: 20px;
+  box-shadow: 0 4px 12px rgba(70,50,35,.08);
+}
+
 .friends-mini-wrap {
   position: relative;
 }
@@ -99,6 +163,20 @@
   font-size: 18px;
   line-height: 34px;
   text-align: center;
+}
+
+.reaction-card {
+  padding: 14px 16px;
+}
+
+.reaction-bubble {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.9);
+  font-size: 22px;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(70,50,35,.08);
 }
 
 :root {
@@ -3999,29 +4077,32 @@ async function loadReactionsPage() {
     box.innerHTML = Object.values(grouped).map(group => {
       const sender = group.sender;
 
-      return `
-        <div class="friend-result">
-          <img
-            class="friend-avatar"
-            src="${sender?.photo_url || ""}"
-            alt=""
-          >
+    return `
+  <div class="friend-result reaction-card">
 
-          <div class="friend-result-info">
-            <div class="friend-result-name">
-              ${sender?.first_name || "Пользователь"}
-            </div>
+    <img
+      class="friend-avatar"
+      src="${sender?.photo_url || ""}"
+      alt=""
+    >
 
-            <div class="friend-result-username">
-              ${sender?.username ? `@${sender.username}` : ""}
-            </div>
+    <div class="friend-result-info">
+      <div class="friend-result-name">
+        ${sender?.first_name || "Пользователь"}
+      </div>
 
-            <div class="received-reactions">
-              ${group.reactions.join(" ")}
-            </div>
-          </div>
-        </div>
-      `;
+      <div class="friend-result-username">
+        ${sender?.username ? `@${sender.username}` : ""}
+      </div>
+    </div>
+
+    <div class="reaction-bubble">
+      ${group.reactions.join(" ")}
+    </div>
+
+  </div>
+`;
+    
     }).join("");
 
   } catch (error) {
