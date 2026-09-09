@@ -24,6 +24,43 @@
   position: relative;
 }
 
+.friends-section {
+  margin-top: 18px;
+  padding: 16px;
+  background: rgba(255, 252, 247, 0.94);
+  border-radius: 22px;
+  box-shadow: 0 6px 20px rgba(70, 50, 35, 0.07);
+}
+
+.friends-mini-wrap {
+  position: relative;
+}
+
+.friends-reaction-badge {
+  display: none;
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: #ff3b30;
+  color: white;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 20px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  z-index: 10;
+}
+
+.friends-section-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
 .reaction-open-btn {
   width: 38px;
   height: 38px;
@@ -951,9 +988,14 @@ flex: 0 0 82px;
 
   <div class="profile-mini-arrow">›</div>
 </div>
+
+<div class="friends-mini-wrap">
   <button class="friends-mini-button" onclick="event.stopPropagation(); openFriends()">
-  👥
-</button>
+    👥
+  </button>
+
+  <div id="friendsReactionBadge" class="friends-reaction-badge"></div>
+</div>
 
 </div>
 
@@ -1016,17 +1058,17 @@ flex: 0 0 82px;
   </div>
 
   <div class="friends-section">
-    <div class="friends-section-title">Заявки</div>
+ <div class="friends-section-title">📩 Заявки</div>
     <div id="friendsPageRequests"></div>
   </div>
 
 <div class="friends-section">
-  <div class="friends-section-title">Тебе отправили</div>
+  <div class="friends-section-title">💌 Тебе отправили</div>
   <div id="friendsPageReactions"></div>
 </div>
 
   <div class="friends-section">
-    <div class="friends-section-title">Мои друзья</div>
+    <div class="friends-section-title">👥 Мои друзья</div>
     <div id="friendsPageList"></div>
   </div>
 </div>
@@ -3399,6 +3441,28 @@ function openFriends() {
     loadReactionsPage();
 loadFriendsPage();
 
+dogAtlasProfileApi("get_reactions").then(data => {
+  const reactions = data?.reactions || [];
+
+  if (reactions.length > 0) {
+    const newestId = Math.max(
+      ...reactions.map(item => Number(item.id) || 0)
+    );
+
+    localStorage.setItem(
+      "dogAtlasLastSeenReactionId",
+      String(newestId)
+    );
+  }
+
+  const badge = document.getElementById("friendsReactionBadge");
+
+  if (badge) {
+    badge.style.display = "none";
+    badge.innerText = "";
+  }
+});
+
   }
 }
 
@@ -3697,6 +3761,38 @@ async function acceptFriendFromPage(requestId) {
   }
 }
 
+async function updateFriendsReactionBadge() {
+  const badge = document.getElementById("friendsReactionBadge");
+
+  if (!badge) return;
+
+  try {
+    const data = await dogAtlasProfileApi("get_reactions");
+    const reactions = data?.reactions || [];
+
+    const lastSeenId = Number(
+      localStorage.getItem("dogAtlasLastSeenReactionId") || 0
+    );
+
+    const newReactions = reactions.filter(item =>
+      Number(item.id) > lastSeenId
+    );
+
+    const count = newReactions.length;
+
+    if (count > 0) {
+      badge.innerText = count > 99 ? "99+" : count;
+      badge.style.display = "block";
+    } else {
+      badge.innerText = "";
+      badge.style.display = "none";
+    }
+  } catch (error) {
+    badge.style.display = "none";
+    console.log("Ошибка бейджа реакций:", error);
+  }
+}
+
   function fillMiniProfile() {
   const user = window.Telegram?.WebApp?.initDataUnsafe?.user;
 
@@ -3926,6 +4022,7 @@ async function acceptFriend(requestId) {
 loadFriendRequests();
 loadFriends();
 fillMiniProfile();
+updateFriendsReactionBadge();
 </script>
 
 <div id="photoModal" class="photo-modal" onclick="closeDogPhoto()">
