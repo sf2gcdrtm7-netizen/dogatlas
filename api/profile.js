@@ -435,11 +435,13 @@ if (action === "get_friend_profile") {
     `saved_dogs?telegram_id=eq.${friend_telegram_id}`
   );
 
-  return res.status(200).json({
-    ok: true,
-    profile: profile?.[0] || null,
-    saved_dogs_count: dogs?.length || 0
-  });
+ return res.status(200).json({
+  ok: true,
+  profile: profile?.[0] || null,
+  saved_dogs_count: dogs?.length || 0,
+  saved_dogs: dogs || []
+});
+  
 }
 
     if (action === "get_profile") {
