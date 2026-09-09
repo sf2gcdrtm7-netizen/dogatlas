@@ -24,7 +24,32 @@
   position: relative;
 }
 
+.friend-list-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  margin-top: 8px;
+  background: rgba(255, 252, 247, 0.96);
+  border-radius: 18px;
+  box-shadow: 0 4px 14px rgba(70, 50, 35, 0.07);
+  position: relative;
+  cursor: pointer;
+}
 
+.friend-list-card .friend-avatar {
+  width: 54px;
+  height: 54px;
+}
+
+.friend-list-card .friend-result-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.friend-list-card .reaction-picker-wrap {
+  margin-left: auto;
+}
 
 .friends-page-title {
   font-size: 28px;
@@ -3917,7 +3942,7 @@ async function loadFriendsPage() {
     }
 
     listEl.innerHTML = data.friends.map(friend => `
-     <div class="friend-result" onclick="openFriendProfile(${friend.telegram_id})">
+   <div class="friend-list-card" onclick="openFriendProfile(${friend.telegram_id})">
         <img
           class="friend-avatar"
           src="${friend.photo_url || ""}"
